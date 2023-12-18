@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -74,6 +75,7 @@ export default function HomeScreen({navigation}) {
     <MainContainer
     //  style={{ flex: 1,padding:10 }}
     >
+      <ImageBackground  source={require('../assets/images/AdobeStock_451951431_Preview.jpeg')} style={{backgroundColor:'red',width:width,height:height}}>
       {data.length > 0 ?
       <FlatList
         style={{...StyleSheet.absoluteFillObject, paddingHorizontal: 10}}
@@ -213,6 +215,7 @@ export default function HomeScreen({navigation}) {
         <DarkTextMedium>No Lead Assign yet</DarkTextMedium>
       </View>
       }
+      </ImageBackground>
     </MainContainer>
   );
 }
