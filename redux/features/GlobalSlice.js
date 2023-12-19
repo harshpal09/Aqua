@@ -4,6 +4,15 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isUserLoggedIn: false,
+  material:[
+    {
+      "placeholder": "Material name",
+      "name": "electrical_interior_no_power_window_status",
+      "type": "material",
+      "elements": [],
+      "value": ""
+    }
+  ],
   wizardObj: {
     currentStep: 'description',
     index:0,
@@ -53,10 +62,13 @@ export const GlobalSlice = createSlice({
       state.badges.completed = action.payload.completed;
       state.badges.today = action.payload.today;
 
+    },
+    setMaterial:(state,action)=>{
+      state.material = action.payload;
     }
   },
 });
 
-export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setBadges} = GlobalSlice.actions;
+export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setBadges,setMaterial} = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

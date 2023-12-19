@@ -16,7 +16,7 @@ export  const login = async({email,password}) => {
                 password:password,
             }
           );
-          console.log('data =>',response.data)
+          // console.log('data =>',response.data)
           return response;
     }
     catch(error){
@@ -41,10 +41,12 @@ export  const allInspection = async({id ,status}) => {
               status:status,
           }
         );
+        // console.log("res > ",response)
       return response;
      
   }
   catch(error){
+    console.log("err > ",error)
       response.error = error
       return response;
   }

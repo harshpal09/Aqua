@@ -75,7 +75,7 @@ const MainContainer = ({mainIndex,data}) =>{
   // console.log('accodian => ', !accordion);
 
   return (
-    <SafeAreaView style={[globalStyles.flexBoxJustify, {width: '100%'}]}>
+    <SafeAreaView style={[globalStyles.flexBoxJustify, {width: '100%',paddingBottom:300}]}>
       <TouchableOpacity
         activeOpacity={0.7}
         style={[
@@ -108,13 +108,13 @@ const MainContainer = ({mainIndex,data}) =>{
               {data != undefined ? data.title : ''}
             </Text>
           </View>
-          <View style={[globalStyles.flexBox,{right:-80}]}>
+          {/* <View style={[globalStyles.flexBox,{right:-80}]}>
             <TouchableOpacity
               style={[
                 {
                   width: '100%',
                   padding:5,
-                  // height: 40,
+                  height: 40,
                   backgroundColor: ORANGE_COLOR,
                   borderRadius: 10,
                 },
@@ -122,15 +122,15 @@ const MainContainer = ({mainIndex,data}) =>{
               ]}
               onPress={{}}
               activeOpacity={0.9}
-              // disabled={toggle}
+              disabled={toggle}
               >
-              {/* {toggle ? (
+              {toggle ? (
                 <ActivityIndicator size={'small'} color={'white'} />
-              ) : ( */}
-                <DarkTextSmall style={{color: 'white',fontSize:10}}>Add <MaterialCommunityIcons  name="plus-circle" color={'white'} size={10} /></DarkTextSmall>
-              {/* )} */}
+              ) : (
+                <DarkTextSmall style={{color: 'white',fontSize:10}}>Add <MaterialCommunityIcons  name="plus-circle" color={'white'} size={10} /></DarkTextSmall> 
+               )} 
             </TouchableOpacity>
-          </View>
+          </View> */}
           <Animated.View
             style={[
               styles.rotatedBox,

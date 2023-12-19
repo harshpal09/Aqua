@@ -21,6 +21,7 @@ const Stack = createStackNavigator();
 
 const LoginComponent = () => {
   const isGlobalBoolean = useSelector(state => state.global.userDetails);
+  console.log("profil details => in login ",isGlobalBoolean)
   const dispatch = useDispatch();
 
   const [focusInEmail,setFocusInEmail] = useState(false)

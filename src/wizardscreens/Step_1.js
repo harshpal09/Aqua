@@ -1,13 +1,15 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, StyleSheet, RefreshControl, View } from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator, StyleSheet, RefreshControl, View, ImageBackground } from 'react-native';
 import { InspectionDetails, DetailsChild } from '../../export';
-import { globalStyles } from '../utils/Style';
+import useMaterialData, { globalStyles, height, width } from '../utils/Style';
 import { documentsForm } from '../services/Api';
 import { useSelector } from 'react-redux';
-import { data } from '../utils/Style';
+import {  } from '../utils/Style';
+
 const ParentContext = createContext();
 
 export default function Step_1() {
+  const data = useMaterialData();
   const wizobj = useSelector(state => state.global.wizardObj);
   const profileDetails = useSelector(state => state.global.profileDetails);
 
@@ -48,6 +50,7 @@ export default function Step_1() {
   return (
     // <ParentContext.Provider value={getData}>
       <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground source={require('../assets/images/AdobeStock_451951431_Preview.jpeg')} style={{width:width,height:height}} >
         {loading ? (
           <ActivityIndicator
             style={styles.loadingIndicator}
@@ -77,6 +80,7 @@ export default function Step_1() {
             keyExtractor={(item, index) => index.toString()}
           />
         )}
+        </ImageBackground>
       </SafeAreaView>
     // </ParentContext.Provider>
   );

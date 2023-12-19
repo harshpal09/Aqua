@@ -36,6 +36,10 @@ export default function TopNavigation({ navigation }) {
           tabBarBadge: route.name === 'Today' ? badges.today : null,
         })}
       >
+        <HeaderTab.Screen name="All" component={HomeScreen} options={{
+
+tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.all > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.all.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
+}} />
         <HeaderTab.Screen name="Today" component={NewInspection} options={{
           tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.today > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.today.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
         }} />
@@ -49,10 +53,7 @@ export default function TopNavigation({ navigation }) {
             tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.miss > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.miss.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
           }}
         />
-        <HeaderTab.Screen name="All" component={HomeScreen} options={{
-
-          tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.all > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.all.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
-        }} />
+        
 
       </HeaderTab.Navigator>
     </SafeAreaView>

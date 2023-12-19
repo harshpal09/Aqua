@@ -9,6 +9,9 @@ import { View,ActivityIndicator } from 'react-native';
 
 const App = () => {
   const isuserLoggedIn = useSelector((state)=> state.global.isUserLoggedIn)
+  const userDetails = useSelector((state)=> state.global.userDetails)
+
+  console.log("user details in app.js=>    ", userDetails);
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
