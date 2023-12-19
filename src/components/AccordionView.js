@@ -25,7 +25,13 @@ import {
   DatePicker,
   MultiSelectDropdown,
 } from '../../export';
-import {Container, DarkTextLarge, DarkTextMedium, FadeTextMedium, FadeTextSmall} from './StyledComponent';
+import {
+  Container,
+  DarkTextLarge,
+  DarkTextMedium,
+  FadeTextMedium,
+  FadeTextSmall,
+} from './StyledComponent';
 import {
   Camera,
   useCameraPermission,
@@ -36,11 +42,15 @@ import {documentsForm, submitForm} from '../services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {getStateFromPath} from '@react-navigation/native';
-import {setMaterial, setWizardCurrentStep} from '../../redux/features/GlobalSlice';
+import {
+  setMaterial,
+  setWizardCurrentStep,
+} from '../../redux/features/GlobalSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { ParentContext } from '../wizardscreens/Step_1';
 import VideoComponent from './VideoComponent';
 import Material from './Material';
+import CustomDropdownAqua from './CustomDropdownAqua';
 
 const AccordionView = ({
   isSubChild,
@@ -117,7 +127,6 @@ const AccordionView = ({
     setSendData(prevData => ({...prevData, [field.name]: event}));
   };
 
-  
   const handleClickPhotoChange = (photo, field) => {
     // console.log("photo before   ",photo);
     setSendData(prevData => {
@@ -214,87 +223,51 @@ const AccordionView = ({
           />
         );
       case 'material':
-        return (
-          material_data.map((data,ind)=>(
-            <Material key={ind}/>
-          ))
-        );
+        return material_data.map((data, ind) => (
+          <Material index={ind} fields={data} key={ind} />
+        ));
       case 'payment':
         return (
           <View>
-          <View
-          style={[
-            {width: '100%', padding:5},
-            globalStyles.rowContainer,
-            globalStyles.flexBox,
-          ]}
-       
-          >
-          <View
-            style={[
-              {width: '100%', },
-              globalStyles.rowContainer,
-              globalStyles.flexBox
-            ]}>
-            <DarkTextLarge style={{width: '50%', padding: 5,}}>
-              Total Amount:
-            </DarkTextLarge>
-            <DarkTextMedium style={{width: '50%', padding: 5,}}>
-              Rs. 2999
-            </DarkTextMedium>
-            
+            <View
+              style={[
+                {width: '100%', padding: 5},
+                globalStyles.rowContainer,
+                globalStyles.flexBox,
+              ]}>
+              <View
+                style={[
+                  {width: '100%'},
+                  globalStyles.rowContainer,
+                  globalStyles.flexBox,
+                ]}>
+                <DarkTextLarge style={{width: '50%', padding: 5}}>
+                  Total Amount:
+                </DarkTextLarge>
+                <DarkTextMedium style={{width: '50%', padding: 5}}>
+                  Rs. 2999
+                </DarkTextMedium>
+              </View>
+            </View>
+            <View
+              style={[
+                {width: '100%', padding: 5},
+                globalStyles.rowContainer,
+                globalStyles.flexBox,
+              ]}>
+              <View
+                style={[
+                  {width: '100%'},
+                  globalStyles.rowContainer,
+                  globalStyles.flexBox,
+                ]}>
+                <DarkTextLarge style={{width: '50%', padding: 5}}>
+                  Payment Status:
+                </DarkTextLarge>
+                <CustomDropdownAqua  fields={{elements:['paid','pending'],placeholder:'Payment Status'}} onInputChange={()=>{}} />
+              </View>
+            </View>
           </View>
-
-        </View>
-        <View
-          style={[
-            {width: '100%', padding:5},
-            globalStyles.rowContainer,
-            globalStyles.flexBox,
-          ]}
-       
-          >
-          <View
-            style={[
-              {width: '100%', },
-              globalStyles.rowContainer,
-              globalStyles.flexBox
-            ]}>
-            <DarkTextLarge style={{width: '50%', padding: 5,}}>
-             Payment :
-            </DarkTextLarge>
-            <DarkTextMedium style={{width: '50%', padding: 5,}}>
-              Paid
-            </DarkTextMedium>
-            
-          </View>
-
-        </View>
-        <View
-          style={[
-            {width: '100%', padding:5},
-            globalStyles.rowContainer,
-            globalStyles.flexBox,
-          ]}
-       
-          >
-          <View
-            style={[
-              {width: '100%', },
-              globalStyles.rowContainer,
-              globalStyles.flexBox
-            ]}>
-            <DarkTextLarge style={{width: '50%', padding: 5,}}>
-              Status :
-            </DarkTextLarge>
-            <DarkTextMedium style={{width: '50%', padding: 5,}}>
-              Pending
-            </DarkTextMedium>
-            
-          </View>
-
-        </View>
-        </View>
         );
       // Add more cases for other types
       default:
@@ -319,7 +292,6 @@ const AccordionView = ({
       },
     ]);
   };
- 
 
   const onSubmit = async () => {
     setToggle(true);

@@ -35,6 +35,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {allInspection} from '../services/Api';
 export default function HomeScreen({navigation}) {
   const badges = useSelector(s => s.global.badges);
+  const user_data = useSelector(s => s.global.userDetails);
+  var val = typeof user_data === 'object' ? user_data : JSON.parse(user_data);
   const dispatch = useDispatch();
   const [containerHeight, setContainerHeight] = useState(0);
   const [data, setData] = useState([]);
@@ -48,13 +50,13 @@ export default function HomeScreen({navigation}) {
   const openPhoneDialer = number => {
     Linking.openURL(`tel:${number}`);
   };
-
+  // console.log("user details ====>",val.id)
   const getData = async () => {
     // console.log("aerrrrr")
     try {
       setLoading(true);
-      const response = await allInspection({id: 1, status: 'total'});
-      console.log("data =>", response.data.data);
+      const response = await allInspection({id: val.id, status: 'total'});
+      // console.log("data =>", response.data.data);
 
       if (response.data.data.code != undefined && response.data.data.code) {
         let obj = {...badges};
@@ -77,10 +79,10 @@ export default function HomeScreen({navigation}) {
     <MainContainer
     //  style={{ flex: 1,padding:10 }}
     >
-      <ImageBackground  source={require('../assets/images/AdobeStock_451951431_Preview.jpeg')} style={{backgroundColor:'red',width:width,height:height}}>
+      <ImageBackground  source={require('../assets/images/MUMBAI.png')} style={{flex:1}}>
       {data.length > 0 ?
       <FlatList
-        style={{...StyleSheet.absoluteFillObject, paddingHorizontal: 10}}
+        style={{ paddingHorizontal: 10,flexGrow:1}}
         data={data}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={getData} />
@@ -104,6 +106,26 @@ export default function HomeScreen({navigation}) {
                 {/* <DarkTextSmall style={[{padding: 5}]}>
                   Inspection Report
                 </DarkTextSmall> */}
+                <View
+                  style={[
+                    {width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Appointment Date:
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {item.item.appointment_date}
+                    </DarkTextMedium>
+                  </View>
+                </View>
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},
@@ -141,6 +163,47 @@ export default function HomeScreen({navigation}) {
                     </FadeTextMedium>
                     <DarkTextMedium style={{width: '80%', padding: 5}}>
                       {item.item.warranty_status}
+                    </DarkTextMedium>
+                  </View>
+                </View>
+                <View
+                  style={[
+                    {width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Status :
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {item.item.status}
+                    </DarkTextMedium>
+                  </View>
+                </View>
+
+                <View
+                  style={[
+                    {width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Issue
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {item.item.issue}
                     </DarkTextMedium>
                   </View>
                 </View>

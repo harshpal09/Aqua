@@ -52,6 +52,7 @@ const CustomDropdown = ({ fields, onInputChange }) => {
       {isOpen && (
         <View style={styles.dropdown}>
           <TextInput
+            placeholderTextColor={'black'}
             placeholder={`Search ${fields.placeholder}`}
             style={styles.searchInput}
             onChangeText={handleSearch}
@@ -60,7 +61,7 @@ const CustomDropdown = ({ fields, onInputChange }) => {
             data={filteredOptions}
             renderItem={({ item }) => (
               <TouchableOpacity style={styles.option} onPress={() => handleSelect(item.name)}>
-                <Text>{item.name}</Text>
+                <Text style={{color:'black'}}>{item.name}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id.toString()}

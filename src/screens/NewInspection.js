@@ -75,7 +75,7 @@ export default function NewInspection({navigation}) {
     <MainContainer
     // style={{ flex: 1,padding:10 }}
     >
-      <ImageBackground  source={require('../assets/images/AdobeStock_451951431_Preview.jpeg')} style={{backgroundColor:'red',width:width,height:height}}>
+      <ImageBackground  source={require('../assets/images/MUMBAI.png')} style={{width:width,height:height}}>
       {data.length > 0 ?
       <FlatList
         style={{...StyleSheet.absoluteFillObject, paddingHorizontal: 10}}

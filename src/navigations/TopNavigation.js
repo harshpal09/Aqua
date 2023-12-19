@@ -40,19 +40,19 @@ export default function TopNavigation({ navigation }) {
 
 tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.all > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.all.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
 }} />
-        <HeaderTab.Screen name="Today" component={NewInspection} options={{
+        {/* <HeaderTab.Screen name="Today" component={NewInspection} options={{
           tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.today > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.today.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
-        }} />
+        }} /> */}
         {/* <HeaderTab.Screen name="Completed" component={CompletedInspection}
           options={{
             tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.completed > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.completed.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:-5,top:7}} /></View>,
           }}
         /> */}
-        <HeaderTab.Screen name="Miss" component={MissInspection}
+        {/* <HeaderTab.Screen name="Miss" component={MissInspection}
           options={{
             tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.miss > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.miss.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
           }}
-        />
+        /> */}
         
 
       </HeaderTab.Navigator>

@@ -50,7 +50,7 @@ export default function Step_1() {
   return (
     // <ParentContext.Provider value={getData}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ImageBackground source={require('../assets/images/AdobeStock_451951431_Preview.jpeg')} style={{width:width,height:height}} >
+        <ImageBackground source={require('../assets/images/MUMBAI.png')} style={{flex:1}} >
         {loading ? (
           <ActivityIndicator
             style={styles.loadingIndicator}

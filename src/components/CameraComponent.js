@@ -13,7 +13,7 @@ import {
   useCameraPermission,
   useCameraDevice,
 } from 'react-native-vision-camera';
-import {globalStyles, height, width} from '../utils/Style';
+import {THEME_COLOR, globalStyles, height, width} from '../utils/Style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
@@ -35,8 +35,8 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
     return (
       <View style={styles.container}>
         <Text>Camera permission is required</Text>
-        <TouchableOpacity onPress={requestPermission}>
-          <Text>Request Permission</Text>
+        <TouchableOpacity style={[{backgroundColor:THEME_COLOR,color:'white' ,width:'100%',borderRadius:10,padding:10},globalStyles.flexBox]} onPress={requestPermission}>
+          <Text style={{color:'white'}}>Request Permission</Text>
         </TouchableOpacity>
       </View>
     );
