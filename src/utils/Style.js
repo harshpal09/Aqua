@@ -292,13 +292,12 @@ const useMaterialData = () => {
                   "value": ""
                 },
                 {
-                  "placeholder": "Front Main",
+                  "placeholder": "photo with customer",
                   "name": "front_main",
                   "type": "file",
                   "elements": [],
                   "value": [
-                      "https://crm.unificars.com/uploads/inpectedImages/19051702534848.jpg",
-                      "https://crm.unificars.com/uploads/inpectedImages/42001702536153.jpg"
+                      
                   ]
               },
             ]
