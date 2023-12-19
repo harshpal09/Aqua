@@ -240,6 +240,27 @@ export default function InspectionDetails({navigation}) {
                 {/* <DarkTextSmall style={[{padding: 5}]}>
                   Inspection Report
                 </DarkTextSmall> */}
+                                <View
+                  style={[
+                    {
+                    width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                    Aappointment Date
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {profileDetails.appointment_date}
+                    </DarkTextMedium>
+                  </View>
+                </View>
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},
@@ -280,6 +301,49 @@ export default function InspectionDetails({navigation}) {
                     </DarkTextMedium>
                   </View>
                 </View>
+                <View
+                  style={[
+                    {width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Status :
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {profileDetails.status}
+                    </DarkTextMedium>
+                  </View>
+                </View>
+
+                <View
+                  style={[
+                    {width: '100%', backgroundColor: 'transparent'},
+                    globalStyles.rowContainer,
+                    globalStyles.flexBox,
+                  ]}
+                  >
+                  <View
+                    style={[
+                      {width: '100%', backgroundColor: 'transparent'},
+                      globalStyles.rowContainer,
+                    ]}>
+                    <FadeTextMedium style={{ padding: 5}}>
+                    Issue
+                    </FadeTextMedium>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
+                      {profileDetails.issue}
+                    </DarkTextMedium>
+                  </View>
+                </View>
+                
+                
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},

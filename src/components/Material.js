@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import CustomDropdown from './CustomDropdown';
 import {THEME_COLOR, globalStyles, width} from '../utils/Style';
@@ -47,13 +47,16 @@ const material_type = [
   },
 ];
 
-export default function Material({fields}) {
+export default function Material({fields,index}) {
+  // console.log("dields => ",fields," ",index);
   const material_data = useSelector(state => state.global.material);
   const dispatch = useDispatch();
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
     const onHandleDelete = ()=>{
+
         if(material_data.length > 1){
+         
         let arr = [...material_data];
         arr.pop({
           "placeholder": "Material name",
@@ -77,6 +80,9 @@ export default function Material({fields}) {
         });
         dispatch(setMaterial(arr));
       }
+   const  onInputChange = ()=>{
+
+   }  
     
   return (
     <View style={{backgroundColor: 'transparent', width: '100%'}}>
@@ -94,7 +100,7 @@ export default function Material({fields}) {
           <View style={globalStyles.cartIncDecContainer}>
             <TouchableOpacity
               style={globalStyles.decBtn}
-              onPress={() => setCount(prev => (prev > 0 ? prev - 1 : 0))}>
+              onPress={() => setCount(prev => (prev > 2 ? prev - 1 : 1))}>
               <Text style={globalStyles.decButton}>-</Text>
             </TouchableOpacity>
             <Text style={globalStyles.incDecField}>{count}</Text>
@@ -105,9 +111,9 @@ export default function Material({fields}) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{backgroundColor:'transparent'}}>
+        <KeyboardAvoidingView style={{backgroundColor:'transparent'}}>
             <CustomTextInput onInputChange={()=>{}} fields={{placeholder:'Price',value:''}} />
-        </View>
+        </KeyboardAvoidingView>
       </View>
       <View style={[{width:'100%',backgroundColor:'transparent',justifyContent:'space-between'},globalStyles.rowContainer]}>
         <View style={{height:40,justifyContent:'center',backgroundColor:'transparent'}}><TouchableOpacity onPress={onHandleDelete}><MaterialCommunityIcons  name={'minus-circle'} color={'red'} size={30} /></TouchableOpacity></View>
