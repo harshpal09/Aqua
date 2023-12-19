@@ -10,7 +10,7 @@ export default function BottomTabs() {
   return (
     <Tab.Navigator screenOptions={{
       tabBarActiveTintColor:THEME_COLOR,
-      tabBarStyle:{backgroundColor:'transparent'}
+      // tabBarStyle:{backgroundColor:''}
     }}>
       
       <Tab.Screen
@@ -28,7 +28,7 @@ export default function BottomTabs() {
             // backgroundColor:'red',
             // width:'100%'
           },
-          headerTitle: 'Car Inspection',
+          headerTitle: 'Aqua Mumbai',
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons

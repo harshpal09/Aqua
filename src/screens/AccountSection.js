@@ -14,12 +14,9 @@ export default function AccountSection() {
   const dispatch = useDispatch();
   const isuserLoggedIn = useSelector((state)=> state.global.isUserLoggedIn)
   const val = useSelector((s)=>s.global.userDetails)
-  var data = null;
-  if(typeof val == 'object'){
-      data = val
-  }{
-      data = JSON.parse(val);
-  }
+  
+  var data = typeof val === 'object' ? val : JSON.parse(val);
+
   // const data = 
   const car_details = [
     {

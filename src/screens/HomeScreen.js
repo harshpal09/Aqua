@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,12 +50,13 @@ export default function HomeScreen({navigation}) {
   };
 
   const getData = async () => {
+    // console.log("aerrrrr")
     try {
       setLoading(true);
       const response = await allInspection({id: 1, status: 'total'});
+      console.log("data =>", response.data.data);
 
       if (response.data.data.code != undefined && response.data.data.code) {
-        // console.log("data =>", response.data.data.data);
         let obj = {...badges};
         obj.all = response.data.data.data.length;
 
@@ -98,10 +100,10 @@ export default function HomeScreen({navigation}) {
           style={{ width: '100%' }}
         >
             <View style={[globalStyles.rowContainer]}>
-              <View style={[{width: '100%', backgroundColor: 'transparent'}]}>
-                <DarkTextSmall style={[{padding: 5}]}>
+              <View style={[{width: '100%', backgroundColor: 'transparent',paddingHorizontal:10}]}>
+                {/* <DarkTextSmall style={[{padding: 5}]}>
                   Inspection Report
-                </DarkTextSmall>
+                </DarkTextSmall> */}
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},
@@ -114,8 +116,8 @@ export default function HomeScreen({navigation}) {
                       {width: '100%', backgroundColor: 'transparent'},
                       globalStyles.rowContainer,
                     ]}>
-                    <FadeTextMedium style={{width: '50%', padding: 5}}>
-                    Case No.
+                    <FadeTextMedium style={{ padding: 5}}>
+                    Case No. :
                     </FadeTextMedium>
                     <DarkTextMedium style={{width: '50%', padding: 5}}>
                       {item.item.sr_number}
@@ -134,10 +136,10 @@ export default function HomeScreen({navigation}) {
                       {width: '100%', backgroundColor: 'transparent'},
                       globalStyles.rowContainer,
                     ]}>
-                    <FadeTextMedium style={{width: '50%', padding: 5}}>
-                      Warranty Status
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Warranty Status :
                     </FadeTextMedium>
-                    <DarkTextMedium style={{width: '50%', padding: 5}}>
+                    <DarkTextMedium style={{width: '80%', padding: 5}}>
                       {item.item.warranty_status}
                     </DarkTextMedium>
                   </View>
@@ -155,10 +157,10 @@ export default function HomeScreen({navigation}) {
                       {width: '100%', backgroundColor: 'transparent'},
                       globalStyles.rowContainer,
                     ]}>
-                    <FadeTextMedium style={{width: '50%', padding: 5}}>
-                      Package
+                    <FadeTextMedium style={{ padding: 5}}>
+                      Package :
                     </FadeTextMedium>
-                    <DarkTextMedium style={{width: '50%', padding: 5}}>
+                    <DarkTextMedium style={{width: '70%', padding: 5}}>
                       {item.item.package}
                     </DarkTextMedium>
                   </View>
@@ -176,16 +178,16 @@ export default function HomeScreen({navigation}) {
                       {width: '100%', backgroundColor: 'transparent'},
                       globalStyles.rowContainer,
                     ]}>
-                    <FadeTextMedium style={{width: '50%', padding: 5}}>
-                    Address
+                    <FadeTextMedium style={{ padding: 5}}>
+                    Address :
                     </FadeTextMedium>
-                    <DarkTextMedium style={{width: '50%', padding: 5}}>
+                    <DarkTextMedium style={{ width:'80%',padding: 5}}>
                       {item.item.address}
                     </DarkTextMedium>
                   </View>
                 </View>
               </View>
-          </View>
+           </View>
           <View style={[{paddingTop:10}]}>
             <TouchableOpacity
               style={[
@@ -211,9 +213,13 @@ export default function HomeScreen({navigation}) {
         )}
       />
             :
-      <View style={[{flex:1},globalStyles.flexBox]}>
-        <DarkTextMedium>No Lead Assign yet</DarkTextMedium>
-      </View>
+            <ScrollView style={{backgroundColor:'transparent'}} showsVerticalScrollIndicator={false} refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getData} />
+            }>
+              <View style={[{flex: 1,backgroundColor:'transparent',height:height-200}, globalStyles.flexBox]}>
+                <DarkTextMedium>No Lead Assign yet</DarkTextMedium>
+              </View>
+            </ScrollView>
       }
       </ImageBackground>
     </MainContainer>

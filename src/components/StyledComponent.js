@@ -9,7 +9,7 @@ background-color: white;
   align-items: center;
 `;
 export const Container = styled.View`
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   align-items: center;
   padding:15px 5px 15px 5px;
   margin-bottom: 5px;
@@ -33,7 +33,7 @@ export const StyledButton = styled.TouchableOpacity`
 
 export const ItemContainer = styled.TouchableOpacity`
   width: 95%;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6); /* Adjust the alpha value for transparency */
   margin: 0 auto; /* Center the container horizontally */
   margin-top: 10px; /* Add top margin if needed */
   padding: 5px; /* Add padding for content */

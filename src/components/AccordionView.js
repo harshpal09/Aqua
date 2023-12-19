@@ -25,7 +25,7 @@ import {
   DatePicker,
   MultiSelectDropdown,
 } from '../../export';
-import {Container, DarkTextLarge, DarkTextMedium} from './StyledComponent';
+import {Container, DarkTextLarge, DarkTextMedium, FadeTextMedium, FadeTextSmall} from './StyledComponent';
 import {
   Camera,
   useCameraPermission,
@@ -36,10 +36,11 @@ import {documentsForm, submitForm} from '../services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {getStateFromPath} from '@react-navigation/native';
-import {setWizardCurrentStep} from '../../redux/features/GlobalSlice';
+import {setMaterial, setWizardCurrentStep} from '../../redux/features/GlobalSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { ParentContext } from '../wizardscreens/Step_1';
 import VideoComponent from './VideoComponent';
+import Material from './Material';
 
 const AccordionView = ({
   isSubChild,
@@ -79,6 +80,8 @@ const AccordionView = ({
   const dispatch = useDispatch();
 
   const wizobj = useSelector(state => state.global.wizardObj);
+  const material_data = useSelector(state => state.global.material);
+
   // console.log("wizard obj =>",wizobj);
   useEffect(() => {
     setData();
@@ -114,6 +117,7 @@ const AccordionView = ({
     setSendData(prevData => ({...prevData, [field.name]: event}));
   };
 
+  
   const handleClickPhotoChange = (photo, field) => {
     // console.log("photo before   ",photo);
     setSendData(prevData => {
@@ -209,6 +213,89 @@ const AccordionView = ({
             isTextArea={true}
           />
         );
+      case 'material':
+        return (
+          material_data.map((data,ind)=>(
+            <Material key={ind}/>
+          ))
+        );
+      case 'payment':
+        return (
+          <View>
+          <View
+          style={[
+            {width: '100%', padding:5},
+            globalStyles.rowContainer,
+            globalStyles.flexBox,
+          ]}
+       
+          >
+          <View
+            style={[
+              {width: '100%', },
+              globalStyles.rowContainer,
+              globalStyles.flexBox
+            ]}>
+            <DarkTextLarge style={{width: '50%', padding: 5,}}>
+              Total Amount:
+            </DarkTextLarge>
+            <DarkTextMedium style={{width: '50%', padding: 5,}}>
+              Rs. 2999
+            </DarkTextMedium>
+            
+          </View>
+
+        </View>
+        <View
+          style={[
+            {width: '100%', padding:5},
+            globalStyles.rowContainer,
+            globalStyles.flexBox,
+          ]}
+       
+          >
+          <View
+            style={[
+              {width: '100%', },
+              globalStyles.rowContainer,
+              globalStyles.flexBox
+            ]}>
+            <DarkTextLarge style={{width: '50%', padding: 5,}}>
+             Payment :
+            </DarkTextLarge>
+            <DarkTextMedium style={{width: '50%', padding: 5,}}>
+              Paid
+            </DarkTextMedium>
+            
+          </View>
+
+        </View>
+        <View
+          style={[
+            {width: '100%', padding:5},
+            globalStyles.rowContainer,
+            globalStyles.flexBox,
+          ]}
+       
+          >
+          <View
+            style={[
+              {width: '100%', },
+              globalStyles.rowContainer,
+              globalStyles.flexBox
+            ]}>
+            <DarkTextLarge style={{width: '50%', padding: 5,}}>
+              Status :
+            </DarkTextLarge>
+            <DarkTextMedium style={{width: '50%', padding: 5,}}>
+              Pending
+            </DarkTextMedium>
+            
+          </View>
+
+        </View>
+        </View>
+        );
       // Add more cases for other types
       default:
         return null;
@@ -232,6 +319,7 @@ const AccordionView = ({
       },
     ]);
   };
+ 
 
   const onSubmit = async () => {
     setToggle(true);
@@ -287,28 +375,9 @@ const AccordionView = ({
       ]}>
       {expanded && (
         <Container>
-          <View style={[{right:-100}]}>
-            <TouchableOpacity
-              style={[
-                {
-                  width: '100%',
-                  padding:5,
-                  height: 40,
-                  backgroundColor: THEME_COLOR,
-                  borderRadius: 10,
-                },
-                globalStyles.flexBox,
-              ]}
-              onPress={onSubmit}
-              activeOpacity={0.9}
-              disabled={toggle}>
-              {toggle ? (
-                <ActivityIndicator size={'small'} color={'white'} />
-              ) : (
-                <DarkTextLarge style={{color: 'white',fontSize:20}}>Add <MaterialCommunityIcons  name="plus-circle" color={'white'} size={20} /></DarkTextLarge>
-              )}
-            </TouchableOpacity>
-          </View>
+          {/* {wizobj.currentStep == 'material' ? 
+          <View style={{width:'100%',height:40,justifyContent:'center',backgroundColor:'transparent'}}><TouchableOpacity onPress={onHandleAdd}><MaterialCommunityIcons style={{left:width-70}} name={'plus-circle'} color={THEME_COLOR} size={30} /></TouchableOpacity></View>
+          :<></>} */}
           {field_data.map((field, index) => (
             <React.Fragment key={index}>{renderField(field)}</React.Fragment>
           ))}
