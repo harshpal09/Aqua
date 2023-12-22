@@ -34,6 +34,7 @@ import {
 } from '../components/StyledComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {allInspection} from '../services/Api';
+import { useNavigation,useFocusEffect } from '@react-navigation/native';
 export default function HomeScreen({navigation}) {
   const badges = useSelector(s => s.global.badges);
   const user_data = useSelector(s => s.global.userDetails);
@@ -41,10 +42,19 @@ export default function HomeScreen({navigation}) {
 
   var val = typeof user_data === 'object' ? user_data : JSON.parse(user_data);
   const dispatch = useDispatch();
+  const navigation_diff = useNavigation();
+
   const [containerHeight, setContainerHeight] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setRedux(); // You may want to check if this needs to be called on focus as well
+      getData();
+    }, [])
+  );
 
   useEffect(() => {
     setRedux();

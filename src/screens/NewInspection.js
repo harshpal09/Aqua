@@ -33,11 +33,14 @@ import {
 } from '../components/StyledComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {allInspection, getAMC, getAllotedInventory} from '../services/Api';
+import { useNavigation,useFocusEffect } from '@react-navigation/native';
 export default function NewInspection({navigation}) {
   const badges = useSelector(s => s.global.badges);
   const user_data = useSelector(s => s.global.userDetails);
   var val = typeof user_data === 'object' ? user_data : JSON.parse(user_data);
   const dispatch = useDispatch();
+  const navigation_diff = useNavigation();
+
   const [containerHeight, setContainerHeight] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,11 +64,19 @@ export default function NewInspection({navigation}) {
 
   const api_send_data = useSelector(state => state.global.send_data);
 
-  console.log("fghjhgfghjhg=> ",api_send_data)
+  // console.log("fghjhgfghjhg=> ",api_send_data)
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setRedux(); // You may want to check if this needs to be called on focus as well
+      getData();
+    }, [])
+  );
+
   useEffect(() => {
     getData();
     setRedux();
-  }, []);
+  }, [navigation_diff]);
   const setRedux= () =>{
     let newobj = {...api_send_data};
     newobj.type = 2;
