@@ -20,7 +20,7 @@ export  const login = async({email,password}) => {
           return response;
     }
     catch(error){
-      console.log('data =>',error)
+      // console.log('data =>',error)
         response.error = error
         return response;
     }
@@ -28,7 +28,7 @@ export  const login = async({email,password}) => {
 }
 
 export  const allInspection = async({id ,status}) => {
-// console.log("agya")
+console.log("agya")
   let response ={
       error:'',
       data:{},
@@ -51,6 +51,29 @@ export  const allInspection = async({id ,status}) => {
       return response;
   }
 }
+export  const getAllotedInventory = async({id}) => {
+  // console.log("agya")
+    let response ={
+        error:'',
+        data:{},
+    };
+    try{
+         response.data = await axios.post(
+            'https://aqua.thebharatech.com/api/allotedinventory',
+            {
+                tech_id:id,
+            }
+          );
+          // console.log("res > ",response.data.data)
+        return response;
+       
+    }
+    catch(error){
+      console.log("err > ",error)
+        response.error = error
+        return response;
+    }
+  }
 export  const documentsForm = async({leadId}) => {
   // console.log("agya")
     let response ={
@@ -64,6 +87,7 @@ export  const documentsForm = async({leadId}) => {
               lead_id:leadId
             }
           );
+          console.log("res from api call =>",response.data.data)
         return response;
        
     }
@@ -72,26 +96,48 @@ export  const documentsForm = async({leadId}) => {
         return response;
     }
   }
-export  const getUserProfileDetails = async({id}) => {
+export  const getAMC = async({id ,status}) => {
 
-  // let response ={
-  //     error:'',
-  //     data:{},
-  // };
+  let response ={
+      error:'',
+      data:{},
+  };
   try{
-       let response = await axios.post(
-          'https://crm.unificars.com/api/cjprofile',
+       response.data = await axios.post(
+          'https://aqua.thebharatech.com/api/amc',
           {
-              cj_id:id,
+            user_id:id,
+            status:status,
           }
         );
-      console.log('all inspactions =>',response.data)
+      // console.log('get AMC  =>',response.data)
       return response;
      
   }
   catch(error){
-      console.log("response =",error)
-      return error;
+    response.error = error
+      return response;
+  }
+}
+export  const submitForm = async({data:data}) => {
+
+  let response ={
+      error:'',
+      data:{},
+  };
+  try{
+       response.data = await axios.post(
+          'https://aqua.thebharatech.com/api/step3',
+          data
+        );
+      console.log('get response api  =>',response.data.data)
+      return response;
+     
+  }
+  catch(error){
+    console.log("error  =>",error)
+    response.error = error
+      return response;
   }
 }
 

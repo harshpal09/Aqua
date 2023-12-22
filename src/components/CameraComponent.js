@@ -16,7 +16,7 @@ import {
 import {THEME_COLOR, globalStyles, height, width} from '../utils/Style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
+const CameraComponent = ({onPhotoCapture, photoArray, deletePhoto,fields}) => {
   const {hasPermission, requestPermission} = useCameraPermission();
 
   const cameraRef = useRef(null);
@@ -27,7 +27,54 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
   const [showCapturedPhotos, setShowCapturedPhotos] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isRareCamera, setIsRareCamera] = useState(true);
+
+
+  const requestCameraAndMicrophonePermission = async () => {
+    const microphonePermission = Platform.select({
+      ios: PERMISSIONS.IOS.MICROPHONE,
+      android: PERMISSIONS.ANDROID.RECORD_AUDIO,
+    });
   
+    const cameraPermission = Platform.select({
+      ios: PERMISSIONS.IOS.CAMERA,
+      android: PERMISSIONS.ANDROID.CAMERA,
+    });
+  
+    try {
+      // Request microphone permission
+      const microphonePermissionStatus = await check(microphonePermission);
+      if (microphonePermissionStatus !== RESULTS.GRANTED) {
+        const microphoneResult = await request(microphonePermission);
+        if (microphoneResult !== RESULTS.GRANTED) {
+          console.log('Microphone permission denied');
+          // Handle denial as needed
+          return;
+        }
+      }
+  
+      // Request camera permission
+      const cameraPermissionStatus = await check(cameraPermission);
+      if (cameraPermissionStatus !== RESULTS.GRANTED) {
+        const cameraResult = await request(cameraPermission);
+        if (cameraResult !== RESULTS.GRANTED) {
+          console.log('Camera permission denied');
+          // Handle denial as needed
+          return;
+        }
+      }
+  
+      console.log('Microphone and camera permissions granted');
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  
+  useEffect(()=>{
+    if(fields.value.length > 0){
+      photoArray("",fields)
+    }
+    requestCameraAndMicrophonePermission
+  },[])
 
   const device = useCameraDevice(isRareCamera ? 'back' : 'front');
 
@@ -35,14 +82,13 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
     return (
       <View style={styles.container}>
         <Text>Camera permission is required</Text>
-        <TouchableOpacity style={[{backgroundColor:THEME_COLOR,color:'white' ,width:'100%',borderRadius:10,padding:10},globalStyles.flexBox]} onPress={requestPermission}>
+        <TouchableOpacity style={[{backgroundColor:THEME_COLOR,color:'white' ,width:'100%',borderRadius:10,padding:10},globalStyles.flexBox]} onPress={requestCameraAndMicrophonePermission}>
           <Text style={{color:'white'}}>Request Permission</Text>
         </TouchableOpacity>
       </View>
     );
   }
   // console.log("photo clicked => ",capturedPhotos[0]);
-
   if (!device) {
     return (
       <View style={styles.container}>
@@ -112,7 +158,7 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
       });
 
       // Log or use the Base64 string as needed
-      console.log('Base64:', base64);
+      // console.log('Base64:', base64);
 
       return base64;
     } catch (error) {
@@ -163,7 +209,9 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
                   key={index}
                 />
                 <TouchableOpacity
-                  onPress={() => {
+                  onPress={async() => {
+                    let base64 = await imageToBase64(item.path);
+                    deletePhoto(base64,fields);
                     let arr = capturedPhotos.filter((_, ind) => ind !== index);
                     setCapturedPhotos(arr);
                     if (capturedPhotos.length == 1) {
@@ -312,7 +360,9 @@ const CameraComponent = ({onPhotoCapture, photoArray, fields}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteImageButton}
-                  onPress={() => {
+                  onPress={async() => {
+                    let base64 = await imageToBase64(item.path);
+                    deletePhoto(base64,fields);
                     let arr = capturedPhotos.filter((_, ind) => ind !== index);
                     setCapturedPhotos(arr);
                     if (capturedPhotos.length == 1) {

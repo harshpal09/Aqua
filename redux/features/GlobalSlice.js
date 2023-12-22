@@ -4,15 +4,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isUserLoggedIn: false,
-  material:[
+  material_type:[],
+  send_data:
     {
-      "placeholder": "Material name",
-      "name": "electrical_interior_no_power_window_status",
-      "type": "material",
-      "elements": [],
-      "value": ""
+      material:[],
+      remark:"",
+      payment_type:"",
+      total_amount:0, 
+      photo:[],
+      type :  '',
+      id : '',
     }
-  ],
+  ,
   wizardObj: {
     currentStep: 'description',
     index:0,
@@ -34,7 +37,7 @@ const initialState = {
   badges:{
     today:0,
     completed:0,
-    all:0,
+    all:0, 
     miss:0,
   }
 };
@@ -63,12 +66,16 @@ export const GlobalSlice = createSlice({
       state.badges.today = action.payload.today;
 
     },
-    setMaterial:(state,action)=>{
-      state.material = action.payload;
+    setSendData:(state,action)=>{
+      // console.log("redux => ",action.payload)
+      state.send_data = action.payload;
+    },
+    setMaterialType:(state,action)=>{
+      state.material_type = action.payload
     }
   },
 });
 
-export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setBadges,setMaterial} = GlobalSlice.actions;
+export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setBadges,setSendData,setMaterialType} = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

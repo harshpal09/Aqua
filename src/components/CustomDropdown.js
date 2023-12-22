@@ -5,6 +5,8 @@ import { LightThemeColorTextMedium, ThemeColorTextMedium } from './StyledCompone
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CustomDropdown = ({ fields, onInputChange }) => {
+
+  // console.log("fields =>",fields);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(fields.value || '');
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,8 +21,8 @@ const CustomDropdown = ({ fields, onInputChange }) => {
     }
   }, []);
 
-  const handleSelect = (value) => {
-    onInputChange(value, fields);
+  const handleSelect = (value,index) => {
+    onInputChange(index);
     setSelectedValue(value);
     setIsOpen(false);
   };
@@ -28,9 +30,9 @@ const CustomDropdown = ({ fields, onInputChange }) => {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
-
+  
   const filteredOptions = fields.elements.filter((option) =>
-  option.name && option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  option.type && option.type.toLowerCase().includes(searchQuery.toLowerCase())
 );
 
 
@@ -59,9 +61,9 @@ const CustomDropdown = ({ fields, onInputChange }) => {
           />
           <FlatList
             data={filteredOptions}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.option} onPress={() => handleSelect(item.name)}>
-                <Text style={{color:'black'}}>{item.name}</Text>
+            renderItem={({ item ,index}) => (
+              <TouchableOpacity style={styles.option} onPress={() => handleSelect(item.type,index)}>
+                <Text style={{color:'black'}}>{item.type}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id.toString()}

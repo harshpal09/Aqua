@@ -7,6 +7,15 @@ export default function Step_5() {
     <View>
         <InspectionDetails />
       <Text>Step_5</Text>
+      <Text>Step_5</Text>
+
+      <Text>Step_5</Text>
+      <Text>Step_5</Text>
+      <Text>Step_5</Text>
+      <Text>Step_5</Text>
+      <Text>Step_5</Text>
+      <Text>Step_5</Text>
+
     </View>
   )
 }
