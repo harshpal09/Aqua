@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Modal,
   FlatList,
+  Platform
 } from 'react-native';
 import {
   Camera,
@@ -15,8 +16,9 @@ import {
 } from 'react-native-vision-camera';
 import {THEME_COLOR, globalStyles, height, width} from '../utils/Style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions';
 
-const CameraComponent = ({onPhotoCapture, photoArray, deletePhoto,fields}) => {
+const CameraComponent = ({onHandleAccordion,onPhotoCapture, photoArray, deletePhoto,fields}) => {
   const {hasPermission, requestPermission} = useCameraPermission();
 
   const cameraRef = useRef(null);
@@ -29,29 +31,13 @@ const CameraComponent = ({onPhotoCapture, photoArray, deletePhoto,fields}) => {
   const [isRareCamera, setIsRareCamera] = useState(true);
 
 
-  const requestCameraAndMicrophonePermission = async () => {
-    const microphonePermission = Platform.select({
-      ios: PERMISSIONS.IOS.MICROPHONE,
-      android: PERMISSIONS.ANDROID.RECORD_AUDIO,
-    });
-  
+  const requestCameraPermission = async () => {
     const cameraPermission = Platform.select({
       ios: PERMISSIONS.IOS.CAMERA,
       android: PERMISSIONS.ANDROID.CAMERA,
     });
   
     try {
-      // Request microphone permission
-      const microphonePermissionStatus = await check(microphonePermission);
-      if (microphonePermissionStatus !== RESULTS.GRANTED) {
-        const microphoneResult = await request(microphonePermission);
-        if (microphoneResult !== RESULTS.GRANTED) {
-          console.log('Microphone permission denied');
-          // Handle denial as needed
-          return;
-        }
-      }
-  
       // Request camera permission
       const cameraPermissionStatus = await check(cameraPermission);
       if (cameraPermissionStatus !== RESULTS.GRANTED) {
@@ -61,19 +47,21 @@ const CameraComponent = ({onPhotoCapture, photoArray, deletePhoto,fields}) => {
           // Handle denial as needed
           return;
         }
+        else{
+          // onHandleAccordion(true);
+        }
       }
   
-      console.log('Microphone and camera permissions granted');
+      console.log('Camera permission granted');
     } catch (err) {
       console.warn(err);
     }
   };
-  
   useEffect(()=>{
     if(fields.value.length > 0){
       photoArray("",fields)
     }
-    requestCameraAndMicrophonePermission
+    requestCameraPermission()
   },[])
 
   const device = useCameraDevice(isRareCamera ? 'back' : 'front');
@@ -82,7 +70,7 @@ const CameraComponent = ({onPhotoCapture, photoArray, deletePhoto,fields}) => {
     return (
       <View style={styles.container}>
         <Text>Camera permission is required</Text>
-        <TouchableOpacity style={[{backgroundColor:THEME_COLOR,color:'white' ,width:'100%',borderRadius:10,padding:10},globalStyles.flexBox]} onPress={requestCameraAndMicrophonePermission}>
+        <TouchableOpacity style={[{backgroundColor:THEME_COLOR,color:'white' ,width:'100%',borderRadius:10,padding:10},globalStyles.flexBox]} onPress={requestCameraPermission}>
           <Text style={{color:'white'}}>Request Permission</Text>
         </TouchableOpacity>
       </View>

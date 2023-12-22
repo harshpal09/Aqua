@@ -6,7 +6,7 @@ import { THEME_COLOR } from '../utils/Style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setSendData } from '../../redux/features/GlobalSlice';
+import { setSendData, setWizardCurrentStep } from '../../redux/features/GlobalSlice';
 
 
 const Stack = createStackNavigator();
@@ -24,7 +24,21 @@ export default function StackNavigation() {
       type :  '',
       id : '',
     }
+    let wizobj = {
+      currentStep: 'description',
+      index:0,
+      success:{
+        documents:false,
+        exterior:false,
+        interior:false,
+        engine:false,
+        other:false,
+      },
+      successStep:-1,
+    }
     dispatch(setSendData(obj));
+    dispatch(setWizardCurrentStep(wizobj));
+
     navigation.goBack();
   };
   return (

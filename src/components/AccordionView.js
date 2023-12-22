@@ -274,6 +274,7 @@ const AccordionView = ({
             deletePhoto={handleClickPhotoDelete}
             fields={field}
             photoArray={handleClickPhotoChange}
+            onHandleAccordion={onHandleAccordion}
           />
         );
       case 'video':
@@ -454,6 +455,9 @@ const AccordionView = ({
       setToggle(false);
     }
   };
+  const onHandleAccordion = (val) =>{
+    onHandleAccordion(val);
+  }
   const onAdd = () => {
     const indexToUpdate = api_send_data.material.findIndex(
       obj => obj.id === send_data_obj.id,
