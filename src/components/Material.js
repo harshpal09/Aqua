@@ -1,12 +1,13 @@
 import {KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomDropdown from './CustomDropdown';
 import {THEME_COLOR, globalStyles, width} from '../utils/Style';
-import {DarkTextLarge} from './StyledComponent';
+import {DarkTextLarge, DarkTextMedium, FadeTextMedium} from './StyledComponent';
 import CustomTextInput from './CustomTextInput';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMaterial } from '../../redux/features/GlobalSlice';
+import { getAllotedInventory } from '../services/Api';
 
 
 const material_type = [
@@ -47,78 +48,108 @@ const material_type = [
   },
 ];
 
-export default function Material({fields,index}) {
-  // console.log("dields => ",fields," ",index);
-  const material_data = useSelector(state => state.global.material);
-  const dispatch = useDispatch();
+export default function Material({fields,index,onInputChange}) {
 
+  // console.log("fiels 1 =>",fields)
   const [count, setCount] = useState(1);
-    const onHandleDelete = ()=>{
+  const [obj , setObj] = useState({})
+  const [price, setprice] = useState()
+  const [error, setError] = useState("")
 
-        if(material_data.length > 1){
-         
-        let arr = [...material_data];
-        arr.pop({
-          "placeholder": "Material name",
-          "name": "electrical_interior_no_power_window_status",
-          "type": "material",
-          "elements": [],
-          "value": ""
-        });
-        dispatch(setMaterial(arr));
-    }
-    }
+  const api_send_data = useSelector(state => state.global.send_data);
 
-    const onHandleAdd = ()=>{
-        let arr = [...material_data];
-        arr.push({
-          "placeholder": "Material name",
-          "name": "electrical_interior_no_power_window_status",
-          "type": "material",
-          "elements": [],
-          "value": ""
-        });
-        dispatch(setMaterial(arr));
-      }
-   const  onInputChange = ()=>{
-
-   }  
+  const handlePlus = () =>{
+    if(Object.keys(obj).length !== 0){
+      console.log('araga ')
     
+      if(obj.allotedquantity > count){
+        setCount(prev => prev + 1)
+        setprice(count * parseInt(obj.price))
+        setError("");
+      }
+      else{
+        setError("Oops ! You have only "+obj.allotedquantity+" Alloted Quantity of this inventory");
+      }
+      
+    }else{
+      console.log('araga rr')
+      setError("Please select Material Type First");
+    }
+  }
+  // console.log("data api response =>",api_send_data);
+  useEffect(()=>{ 
+    // console.log("count  =>",count," obj price",obj.price)
+    setprice(count * parseInt(obj.price))
+  },[count])
+  useEffect(()=>{ 
+    // console.log("count  =>",count," obj price",obj.price)
+    setError("");
+    setCount(1);
+    setprice(count * parseInt(obj.price))
+  },[obj])
+
+  useEffect(()=>{
+    if(Object.keys(obj).length !== 0){
+    onInputChange(
+      {
+        id:obj.id,
+        material:obj.type,
+        actual_price:obj.price,
+        quantity:count,
+        rate:obj.price,
+        total:price
+      }
+    )
+    }
+  },[obj,count,price])
+  const onHandleChange=(index)=>{
+    
+    // console.log("ind =>",index)
+    setObj(fields[index]);
+    setprice(count*parseInt(fields[index].price))
+  }
+
+  console.log("price =>",price)
   return (
     <View style={{backgroundColor: 'transparent', width: '100%'}}>
+      {}
       <CustomDropdown
-        onInputChange={() => {}}
+        onInputChange={onHandleChange}
         fields={{
-          elements: material_type,
+          elements: fields,
           value: '',
           placeholder: 'Select Material type',
         }}
       />
       <View style={[globalStyles.rowContainer, {backgroundColor: 'transparent',justifyContent:'space-around'}]}>
-        <View style={{backgroundColor:'transparent'}}>
+        <View style={{backgroundColor:'transparent',left:30}}>
           <DarkTextLarge>Quantity</DarkTextLarge>
           <View style={globalStyles.cartIncDecContainer}>
             <TouchableOpacity
               style={globalStyles.decBtn}
-              onPress={() => setCount(prev => (prev > 2 ? prev - 1 : 1))}>
+              onPress={() => {setCount(prev => (prev > 2 ? prev - 1 : 1)),setError("");}}>
               <Text style={globalStyles.decButton}>-</Text>
             </TouchableOpacity>
             <Text style={globalStyles.incDecField}>{count}</Text>
             <TouchableOpacity
               style={globalStyles.incBtn}
-              onPress={() => setCount(prev => prev + 1)}>
+              onPress={handlePlus}>
               <Text style={globalStyles.incButton}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <KeyboardAvoidingView style={{backgroundColor:'transparent'}}>
+        <View style={[{width:'50%',height:70},globalStyles.flexBox,globalStyles.rowContainer]}>
+        <DarkTextLarge >Price : </DarkTextLarge>
+        <FadeTextMedium style={{fontSize:16,}}>{"₹ "+price}</FadeTextMedium>
+      </View>
+        {/* <KeyboardAvoidingView style={{backgroundColor:'transparent'}}>
             <CustomTextInput onInputChange={()=>{}} fields={{placeholder:'Price',value:''}} />
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView> */}
       </View>
-      <View style={[{width:'100%',backgroundColor:'transparent',justifyContent:'space-between'},globalStyles.rowContainer]}>
-        <View style={{height:40,justifyContent:'center',backgroundColor:'transparent'}}><TouchableOpacity onPress={onHandleDelete}><MaterialCommunityIcons  name={'minus-circle'} color={'red'} size={30} /></TouchableOpacity></View>
-        <View style={{height:40,justifyContent:'center',backgroundColor:'transparent'}}><TouchableOpacity onPress={onHandleAdd}><MaterialCommunityIcons  name={'plus-circle'} color={THEME_COLOR} size={30} /></TouchableOpacity></View>
-      </View>
+      {error && <DarkTextMedium style={{color:'red',width:'100%',textAlign:'center'}}>{error}</DarkTextMedium>}
+
+     
+      
       
     </View>
   );

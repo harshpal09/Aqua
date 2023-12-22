@@ -42,8 +42,13 @@ export default function BottomTabs() {
        component={MyInspection} 
        options={{
         
-        headerShown: false,
-        tabBarLabel: 'My Inspections',
+        headerShown: true,
+        headerTitle:'Alloted Inventory',
+        headerStyle: {
+          backgroundColor: THEME_COLOR, // Set your desired background color
+        },  
+        headerTitleStyle:{color:'white'},      
+        tabBarLabel: 'Alloted Inventory',
         tabBarIcon: ({color, size}) => (
           <MaterialCommunityIcons name="clipboard-text-search" color={color} size={size} />
         ),

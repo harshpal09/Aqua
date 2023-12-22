@@ -12,12 +12,14 @@ export default function Step_1() {
   const data = useMaterialData();
   const wizobj = useSelector(state => state.global.wizardObj);
   const profileDetails = useSelector(state => state.global.profileDetails);
+  const api_send_data = useSelector(state => state.global.send_data);
 
   // const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  console.log("type step=> ",api_send_data.type)
 
-  console.log("wij obj =>",wizobj)
+  // console.log("wij obj =>",wizobj)
   useEffect(() => {
     setLoading(false);
 

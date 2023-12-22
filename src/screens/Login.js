@@ -21,7 +21,7 @@ const Stack = createStackNavigator();
 
 const LoginComponent = () => {
   const isGlobalBoolean = useSelector(state => state.global.userDetails);
-  console.log("profil details => in login ",isGlobalBoolean)
+  // console.log("profil details => in login ",isGlobalBoolean)
   const dispatch = useDispatch();
 
   const [focusInEmail,setFocusInEmail] = useState(false)
@@ -110,7 +110,7 @@ const LoginComponent = () => {
           borderBottomRightRadius: (width + 270) / 2,
         }}></View>
       <View style={{width:'30%',position:'absolute'}}>
-        <Image source={{uri:'https://aqua.thebharatech.com/admin/images/users/removebg.png'}} style={{width:'100%',height:150,}} />
+        <Image source={require('../assets/images/MUMBAI.png')} style={{width:'100%',height:150,}} />
       </View>
       <ProfileContainer
         style={[{marginTop: -200, width: '85%'}, globalStyles.flexBox]}>

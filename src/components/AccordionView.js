@@ -31,6 +31,7 @@ import {
   DarkTextMedium,
   FadeTextMedium,
   FadeTextSmall,
+  ItemContainer,
 } from './StyledComponent';
 import {
   Camera,
@@ -38,12 +39,13 @@ import {
   useCameraDevice,
 } from 'react-native-vision-camera';
 import CameraComponent from './CameraComponent';
-import {documentsForm, submitForm} from '../services/Api';
+import {documentsForm, getAllotedInventory, submitForm} from '../services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {getStateFromPath} from '@react-navigation/native';
 import {
   setMaterial,
+  setSendData,
   setWizardCurrentStep,
 } from '../../redux/features/GlobalSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -64,10 +66,12 @@ const AccordionView = ({
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedText, setSelectedText] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [send_data, setSendData] = useState({});
+  // const [send_data, setSendData] = useState({});
   const [toggle, setToggle] = useState(false);
   const [field_data, setFieldData] = useState(fields);
   const [clickedPhoto, setClickedPhotos] = useState([]);
+  const [send_data_obj, setSendDataObj] = useState([]);
+
   const [error, setError] = useState({
     error: '',
     success: '',
@@ -86,107 +90,165 @@ const AccordionView = ({
       icon: 'car-seat-cooler',
     },
   ]);
-
+  const [material, setMaterial] = useState([]);
+  const [material_data, setMaterialData] = useState(['']);
   const dispatch = useDispatch();
-
   const wizobj = useSelector(state => state.global.wizardObj);
-  const material_data = useSelector(state => state.global.material);
 
-  // console.log("wizard obj =>",wizobj);
-  useEffect(() => {
-    setData();
-    // changeData();
-  }, []);
-  useEffect(() => {
-    // changeData();
-  }, [toggle]);
+  const user_data = useSelector(s => s.global.userDetails);
+  var val = typeof user_data === 'object' ? user_data : JSON.parse(user_data);
 
-  const setData = async () => {
-    try {
-      let userInfo = await AsyncStorage.getItem('user');
-      let user = JSON.parse(userInfo);
-      setSendData(prevData => ({
-        ...prevData,
-        user_id: JSON.parse(user).id,
-        lead_id: profileDetails.id,
-        form_type: title,
-        // ['rc_image']:'dfghjk' // Set the form_type value
-      }));
-    } catch (error) {
-      console.log('error - ', error);
-      setError(prev => ({
-        ...prev,
-        error: '**Something went wrong to save user data',
-      }));
-    }
-  };
-
-  const profileDetails = useSelector(state => state.global.profileDetails);
-
-  const handleTextInputChange = (event, field) => {
-    setSendData(prevData => ({...prevData, [field.name]: event}));
-  };
-
-  const handleClickPhotoChange = (photo, field) => {
-    // console.log("photo before   ",photo);
-    setSendData(prevData => {
-      // Create a copy of the object
-      const newObj = {...prevData};
-      // If the key exists in the object, push the photo to the array
-      if (newObj[field.name]) {
-        newObj[field.name].push(photo);
-      } else {
-        // If the key does not exist, create a new array with the photo
-        newObj[field.name] = [photo];
-      }
-      // Return the updated object
-      return newObj;
-    });
-  };
-
-  // console.log('profile =>',fields)
-  // console.log('send data =>', send_data);
-  // console.log('send data  length=>', send_data.engine_video != undefined ? send_data.engine_video.length:null);
-
-  // console.log('photo image =>',clickedPhoto.length > 0 ?  clickedPhoto[0]._parts:null)
-  // const toggleModal = (image, text) => {
-  //   setSelectedImage(image);
-  //   setSelectedText(text);
-  //   setModalVisible(!isModalVisible);
+  // const dispatch = useDispatch();
+  // const [containerHeight, setContainerHeight] = useState(0);
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [refreshing, setRefreshing] = useState(false);
+  // const openPhoneDialer = number => {
+  //   Linking.openURL(`tel:${number}`);
   // };
 
-  const changeData = async () => {
+  useEffect(() => {
+    getData();
+  }, []);
+  const onSetPaymentDetails = text => {
+    let newobj = {...api_send_data};
+    newobj.payment_type = text;
+    dispatch(setSendData(newobj));
+  };
+
+  const api_send_data = useSelector(state => state.global.send_data);
+  // console.log("api send data =>",api_send_data);
+  const onHandleSendData = newMaterial => {
+    setSendDataObj(newMaterial);
+    // // console.log("new material =>",newMaterial);
+    // const existingMaterialIndex = api_send_data.material.findIndex(
+    //   (materialItem) => materialItem === newMaterial
+    // );
+    //   let newobj = {...api_send_data}
+    //   let newArray = [...api_send_data.material]
+    //   // console.log("new array=>",newArray)
+    // if (existingMaterialIndex !== -1) {
+    //   // Update existing material
+
+    //   newobj.material[existingMaterialIndex] = newMaterial;
+    // } else {
+    //   // Add new material
+    //   // console.log("new material =>",newMaterial);
+    //   newArray.push(newMaterial);
+    //   newobj.material = newArray;
+
+    //   // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",);
+
+    // }
+
+    // // Update the state
+    // console.log("new obj  =>",newobj);
+    // // dispatch(setMaterial({ ...obj }));
+  };
+  // console.log(' new api data => ', api_send_data);
+
+  const getData = async () => {
     try {
       setLoading(true);
-      const response = await documentsForm({leadId: profileDetails.id});
+      const response = await getAllotedInventory({id: val.id});
+
       if (response.data.data.code != undefined && response.data.data.code) {
-        // console.log('main index =>',fieldIndex)
-        // console.log('datadfghjhgfdfghjhfdfghjhgfdfghj =>', response.data.data.data[0]['exterior'][mainIndex].feilds[fieldIndex].subfeilds);
-        // setFieldData(response.data.data.data);
-        // console.log("agya =>",response.data.data.data[0][wizobj.currentStep][mainIndex].feilds[fieldIndex].subfeilds)
-        setFieldData(
-          response.data.data.data[0][wizobj.currentStep][mainIndex].feilds[
-            fieldIndex
-          ].subfeilds,
-        );
+        // console.log("data =>", response.data.data.data);
+        // dispatch(setMaterialType(response.data.data.data))
+        setMaterial(response.data.data.data);
       } else {
       }
     } catch (error) {
       console.log('error ', error);
     } finally {
       setLoading(false);
+      // setRefreshing(false);
     }
   };
-  // console.log("flismdshdbs data => ",field_data)
 
+  // console.log("matreial =>",material)
+  const handleClickPhotoDelete = photo => {
+    // setSendData((prevData) => {
+    //   // Create a copy of the object
+    const newObj = {...api_send_data};
+    // If the key exists in the object, push the photo to the array
+    const photoarray = [...newObj.photo];
+    const newArray = photoarray.filter(element => element !== photo);
+
+    // if (newObj[field.name]) {
+    //   newObj[field.name].push(photo);
+    // } else {
+    // If the key does not exist, create a new array with the photo
+    newObj.photo = [...newArray];
+    dispatch(setSendData(newObj));
+    // }
+    // Return the updated object
+    // return newObj;
+    // });
+  };
+  const handleTextInputChange = (event, field) => {
+    let newobj = {...api_send_data};
+    newobj.remark = event;
+    dispatch(setSendData(newobj));
+  };
+  console.log('photo array length =>', api_send_data.photo.length);
+  const handleClickPhotoChange = photo => {
+    // // console.log("photo before   ",photo);
+    // setSendData(prevData => {
+    //   // Create a copy of the object
+    //   const newObj = {...prevData};
+    //   // If the key exists in the object, push the photo to the array
+    //   if (newObj[field.name]) {
+    //     newObj[field.name].push(photo);
+    //   } else {
+    //     // If the key does not exist, create a new array with the photo
+    //     newObj[field.name] = [photo];
+    //   }
+    //   // Return the updated object
+    //   return newObj;
+    // });
+    let newobj = {...api_send_data};
+    let arr = [...newobj.photo];
+    arr.push(photo);
+    newobj.photo = [...arr];
+
+    // newobj.photo.push(photo);
+    dispatch(setSendData(newobj));
+  };
+  const onHandleDelete = id => {
+    const updatedMaterial = api_send_data.material.filter(
+      item => item.id !== id,
+    );
+
+    // Create a new object with the updated material array
+    const newobj = {...api_send_data, material: updatedMaterial};
+
+    let total = 0;
+    newobj.material.map((data, ind) => {
+      total += parseInt(data.total);
+    });
+
+    newobj.total_amount = total;
+
+    // Dispatch the updated state
+    dispatch(setSendData(newobj));
+  };
+  const onHandleAdd = () => {
+    let arr = [...material_data];
+    // arr.push({
+    //   "placeholder": "Material name",
+    //   "name": "electrical_interior_no_power_window_status",
+    //   "type": "material",
+    //   "elements": [],
+    //   "value": ""
+    // });
+    // dispatch(setMaterial(arr));
+  };
   const renderField = field => {
     switch (field.type) {
       case 'text':
         return (
-          <CustomTextInput
-            onInputChange={handleTextInputChange}
-            fields={field}
-          />
+          <CustomTextInput onInputChange={handleTextInputChange} fields={{}} />
         );
       case 'dropdown':
         return (
@@ -208,7 +270,11 @@ const AccordionView = ({
         );
       case 'file':
         return (
-          <CameraComponent fields={field} photoArray={handleClickPhotoChange} />
+          <CameraComponent
+            deletePhoto={handleClickPhotoDelete}
+            fields={field}
+            photoArray={handleClickPhotoChange}
+          />
         );
       case 'video':
         return (
@@ -218,14 +284,69 @@ const AccordionView = ({
         return (
           <CustomTextInput
             onInputChange={handleTextInputChange}
-            fields={field}
+            fields={{
+              placeholder: 'Please describe the problem',
+              name: 'description',
+              type: 'textarea',
+              elements: [],
+              value: api_send_data.remark,
+            }}
             isTextArea={true}
           />
         );
+
       case 'material':
-        return material_data.map((data, ind) => (
-          <Material index={ind} fields={data} key={ind} />
-        ));
+        return (
+          <View style={{backgroundColor: 'transparent', width: '100%'}}>
+            {
+              loading ? (
+                <ActivityIndicator size={'small'} color={THEME_COLOR} />
+              ) : (
+                <Material fields={material} onInputChange={onHandleSendData} />
+              )
+
+              // <Text>agya</Text>
+            }
+            {/* <View
+              style={[
+                {
+                  width: '100%',
+                  backgroundColor: 'transparent',
+                  justifyContent: 'space-between',
+                },
+                globalStyles.rowContainer,
+              ]}>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <TouchableOpacity onPress={onHandleDelete}>
+                  <MaterialCommunityIcons
+                    name={'minus-circle'}
+                    color={'red'}
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <TouchableOpacity onPress={onHandleAdd}>
+                  <MaterialCommunityIcons
+                    name={'plus-circle'}
+                    color={THEME_COLOR}
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View> */}
+          </View>
+        );
       case 'payment':
         return (
           <View>
@@ -245,7 +366,7 @@ const AccordionView = ({
                   Total Amount:
                 </DarkTextLarge>
                 <DarkTextMedium style={{width: '50%', padding: 5}}>
-                  Rs. 2999
+                  {'₹ ' + api_send_data.total_amount}
                 </DarkTextMedium>
               </View>
             </View>
@@ -264,7 +385,14 @@ const AccordionView = ({
                 <DarkTextLarge style={{width: '50%', padding: 5}}>
                   Payment Status:
                 </DarkTextLarge>
-                <CustomDropdownAqua  fields={{elements:['paid','pending'],placeholder:'Payment Status'}} onInputChange={()=>{}} />
+                <CustomDropdownAqua
+                  fields={{
+                    elements: ['pending', 'online', 'cash'],
+                    placeholder: 'Payment Status',
+                    value: api_send_data.payment_type,
+                  }}
+                  onInputChange={onSetPaymentDetails}
+                />
               </View>
             </View>
           </View>
@@ -274,21 +402,11 @@ const AccordionView = ({
         return null;
     }
   };
-
-  const image = (
-    <Image
-      source={require('../assets/IMG_20230629_140254_867.jpg')}
-      width={100}
-      height={100}
-    />
-  );
-
   const showAlert = message => {
     Alert.alert('Submitted Successfully !', message, [
       {
         text: 'OK',
         onPress: () => {},
-        image,
       },
     ]);
   };
@@ -297,10 +415,12 @@ const AccordionView = ({
     setToggle(true);
     try {
       // setSendData(prevData => ({...prevData, ['front_bumper']: clickedPhoto}));
-      const res = await submitForm({data: send_data});
-      console.log('res => ', res.data.data);
+      const res = await submitForm({data: api_send_data});
+
+      // console.log('res in submit=> ', res.data.data.message);
 
       if (res != null && res.data.data.code == 200) {
+        // console.log('inside =>',res.data.data.message)
         showAlert(res.data.data.message);
         setError(prev => ({
           ...prev,
@@ -334,6 +454,55 @@ const AccordionView = ({
       setToggle(false);
     }
   };
+  const onAdd = () => {
+    const indexToUpdate = api_send_data.material.findIndex(
+      obj => obj.id === send_data_obj.id,
+    );
+    let newobj = {...api_send_data};
+    let newArray = [...api_send_data.material];
+
+    // console.log("add send data => ",send_data_obj);
+    // console.log("Index => ",indexToUpdate);
+
+    if (indexToUpdate !== -1) {
+      const dff = {...newArray[indexToUpdate]};
+      // console.log("diff =>",send_data_obj.total)
+      dff.quantity = send_data_obj.quantity;
+      dff.total = send_data_obj.total;
+      // newobj.total_amount = newobj.total_amount + parseInt(send_data_obj.total)
+      // const updatedMaterial = { ...newArray[indexToUpdate], quantity: 2 };
+      // console.log("update => ",dff);
+      newArray[indexToUpdate] = dff;
+      newobj.material = newArray;
+    } else {
+      // newobj.total_amount = newobj.total_amount + parseInt(send_data_obj.total)
+      newArray.push(send_data_obj);
+      newobj.material = newArray;
+    }
+    let total = 0;
+    newobj.material.map((data, ind) => {
+      total += parseInt(data.total);
+    });
+
+    newobj.total_amount = total;
+    // console.log('new obj  =>', newobj);
+    dispatch(setSendData({...newobj}));
+  };
+
+  const addDescription = () => {
+    let newobj = {...wizobj};
+    if(wizobj.currentStep == 'description'){
+      newobj.currentStep = 'material';
+      newobj.index = 1;
+    }
+    else if(wizobj.currentStep == 'material'){
+      newobj.currentStep = 'payment';
+      newobj.index = 2;
+    }
+
+
+    dispatch(setWizardCurrentStep(newobj));
+  };
 
   return (
     <SafeAreaView
@@ -364,6 +533,7 @@ const AccordionView = ({
             </Text>
           )}
           <View style={[{paddingTop: 10, width: '90%'}]}>
+          {wizobj.currentStep == 'material' ? (
             <TouchableOpacity
               style={[
                 {
@@ -375,16 +545,187 @@ const AccordionView = ({
                 },
                 globalStyles.flexBox,
               ]}
-              onPress={onSubmit}
+              onPress={
+                 onAdd
+              }
               activeOpacity={0.9}
               disabled={toggle}>
-              {toggle ? (
+             
+                <DarkTextMedium style={{color: 'white', fontSize: 20}}>
+                  <MaterialCommunityIcons
+                    name={'plus-circle'}
+                    color="white"
+                    size={20}
+                  />
+                  Add
+                </DarkTextMedium>
+             
+            </TouchableOpacity>
+             ) : (
+              <></>
+            )}
+          </View>
+          <View style={[{paddingTop: 10, width: '90%'}]}>
+            <TouchableOpacity
+              style={[
+                {
+                  width: '100%',
+                  // padding:10,
+                  height: 40,
+                  backgroundColor: ORANGE_COLOR,
+                  borderRadius: 10,
+                },
+                globalStyles.flexBox,
+              ]}
+              onPress={()=>{
+                if(wizobj.currentStep != 'payment'){
+                  addDescription()
+                }
+                else{
+                  onSubmit()
+                }
+              }
+              }
+              activeOpacity={0.9}
+              disabled={toggle}>
+              {toggle ? 
                 <ActivityIndicator size={'small'} color={'white'} />
-              ) : (
-                <DarkTextMedium style={{color: 'white'}}>Submit</DarkTextMedium>
-              )}
+               :<>
+               {wizobj.currentStep != 'payment' ?
+                    <DarkTextMedium style={{color: 'white', fontSize: 20}}>
+                      Next
+                      <MaterialCommunityIcons
+                        name={'arrow-right'}
+                        color="white"
+                        size={20}
+                      />
+                    </DarkTextMedium>
+                    :
+                    <DarkTextMedium style={{color: 'white', fontSize: 20}}>
+                      Submit
+                      
+                    </DarkTextMedium>}
+                    </>
+                }
             </TouchableOpacity>
           </View>
+          {wizobj.currentStep == 'material' ? (
+            <>
+              {api_send_data.material.map((item, ind) => (
+                <ItemContainer
+                  // onPress={() => {
+                  //   navigation.navigate('Step_1', {id: 4444});
+                  //   dispatch(setProfileDetails(item.item));
+                  // }}
+                  key={ind}
+                  activeOpacity={1}
+                  style={[{width: '100%'}, globalStyles.rowContainer]}>
+                  <View style={{width: '90%'}}>
+                    <View
+                      style={[
+                        {width: '100%', padding: 5},
+                        globalStyles.rowContainer,
+                        globalStyles.flexBox,
+                      ]}>
+                      <View
+                        style={[
+                          {width: '100%'},
+                          globalStyles.rowContainer,
+                          globalStyles.flexBox,
+                        ]}>
+                        <FadeTextMedium style={{width: '50%', padding: 0}}>
+                          Material :
+                        </FadeTextMedium>
+                        <DarkTextMedium style={{width: '50%', padding: 0}}>
+                          {item.material}
+                          {/* 12/09/2023 */}
+                        </DarkTextMedium>
+                      </View>
+                    </View>
+                    <View
+                      style={[
+                        {width: '100%', padding: 5},
+                        globalStyles.rowContainer,
+                        globalStyles.flexBox,
+                      ]}>
+                      <View
+                        style={[
+                          {width: '100%'},
+                          globalStyles.rowContainer,
+                          globalStyles.flexBox,
+                        ]}>
+                        <FadeTextMedium style={{width: '50%', padding: 0}}>
+                          Quantity :
+                        </FadeTextMedium>
+                        <DarkTextMedium style={{width: '50%', padding: 0}}>
+                          {item.quantity}
+                        </DarkTextMedium>
+                      </View>
+                    </View>
+                    <View
+                      style={[
+                        {width: '100%', padding: 5},
+                        globalStyles.rowContainer,
+                        globalStyles.flexBox,
+                      ]}>
+                      <View
+                        style={[
+                          {width: '100%'},
+                          globalStyles.rowContainer,
+                          globalStyles.flexBox,
+                        ]}>
+                        <FadeTextMedium style={{width: '50%', padding: 0}}>
+                          Total :
+                        </FadeTextMedium>
+                        <DarkTextMedium style={{width: '50%', padding: 0}}>
+                          {item.total}
+                        </DarkTextMedium>
+                      </View>
+                    </View>
+                    <View
+                      style={[
+                        {width: '100%', padding: 5},
+                        globalStyles.rowContainer,
+                        globalStyles.flexBox,
+                      ]}>
+                      <View
+                        style={[
+                          {width: '100%'},
+                          globalStyles.rowContainer,
+                          globalStyles.flexBox,
+                        ]}>
+                        <FadeTextMedium style={{width: '50%', padding: 0}}>
+                          Price
+                        </FadeTextMedium>
+                        <DarkTextMedium style={{width: '50%', padding: 0}}>
+                          {item.actual_price}
+                        </DarkTextMedium>
+                      </View>
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: 'flex-end',
+                      backgroundColor: 'transparent',
+                    }}
+                    onPress={() => onHandleDelete(item.id)}>
+                    <MaterialCommunityIcons name={'trash-can'} size={30} />
+                  </TouchableOpacity>
+                </ItemContainer>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
+          {wizobj.currentStep == 'material' ? (
+            <View style={{width: '90%', padding: 10}}>
+              <DarkTextLarge>
+                Total price : {'₹ ' + api_send_data.total_amount}
+              </DarkTextLarge>
+            </View>
+          ) : (
+            <></>
+          )}
         </Container>
       )}
     </SafeAreaView>

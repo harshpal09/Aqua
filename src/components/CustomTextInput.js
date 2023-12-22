@@ -17,9 +17,11 @@ export default function CustomTextInput({name,fields,onInputChange,isTextArea}) 
   //  console.log("text fields value =>",fields)
   };
 
+console.log("fields =>",fields)
+
   useEffect(() => {
-    handleInputChange(fields.value)
-  }, [])
+
+  }, [selectedvalue])
   
   return (
     <View style={[globalStyles.flexBox,{backgroundColor:'transparent',width:'100%',paddingVertical:10}]}>

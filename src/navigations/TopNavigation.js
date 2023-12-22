@@ -18,6 +18,7 @@ export default function TopNavigation({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <HeaderTab.Navigator
+        initialRouteName='Complaints'
         screenOptions={({ route }) => ({
           tabBarActiveTintColor: THEME_COLOR,
           tabBarIndicatorStyle: {
@@ -36,13 +37,13 @@ export default function TopNavigation({ navigation }) {
           tabBarBadge: route.name === 'Today' ? badges.today : null,
         })}
       >
-        <HeaderTab.Screen name="All" component={HomeScreen} options={{
+        <HeaderTab.Screen name="Complaints" component={HomeScreen} options={{
 
 tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.all > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.all.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
 }} />
-        {/* <HeaderTab.Screen name="Today" component={NewInspection} options={{
+        <HeaderTab.Screen name="AMC" component={NewInspection} options={{
           tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.today > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.today.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
-        }} /> */}
+        }} />
         {/* <HeaderTab.Screen name="Completed" component={CompletedInspection}
           options={{
             tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.completed > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.completed.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:-5,top:7}} /></View>,
