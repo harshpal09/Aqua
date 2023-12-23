@@ -17,7 +17,9 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   isLoggedIn,
+  setAMCBadge,
   setBadges,
+  setComplaintsBadge,
   setProfileDetails,
   setSendData,
 } from '../../redux/features/GlobalSlice';
@@ -94,10 +96,9 @@ export default function NewInspection({navigation}) {
 
       //  console.log("data =>", response.data.data);
       if (response.data.data.code != undefined && response.data.data.code) {
-        let obj = {...badges};
-        obj.today = response.data.data.data.length;
+    
 
-        dispatch(setBadges(obj));
+        dispatch(setAMCBadge(response.data.data.data.length));
         setData(response.data.data.data);
       } else {
       }
@@ -108,7 +109,7 @@ export default function NewInspection({navigation}) {
       setRefreshing(false);
     }
   };
-  console.log("type new=> ",api_send_data.type)
+  // console.log("type new=> ",api_send_data.type)
 
 
   // console.log("data =>",data);

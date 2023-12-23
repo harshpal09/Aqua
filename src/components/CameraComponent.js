@@ -246,7 +246,7 @@ const CameraComponent = ({onHandleAccordion,onPhotoCapture, photoArray, deletePh
             style={styles.closeCameraButton}
             onPress={handleCloseCamera}>
             <MaterialCommunityIcons
-              name={'camera-off'}
+              name={'file-excel-box-outline'}
               size={40}
               color={'white'}
             />

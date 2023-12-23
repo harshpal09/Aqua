@@ -1,10 +1,12 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, StyleSheet, RefreshControl, View, ImageBackground } from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator, StyleSheet, RefreshControl, View, ImageBackground, TouchableOpacity, Text } from 'react-native';
 import { InspectionDetails, DetailsChild } from '../../export';
 import useMaterialData, { globalStyles, height, width } from '../utils/Style';
 import { documentsForm } from '../services/Api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {  } from '../utils/Style';
+import { useNavigation } from '@react-navigation/native';
+import { setSendData, setWizardCurrentStep } from '../../redux/features/GlobalSlice';
 
 const ParentContext = createContext();
 
@@ -17,8 +19,9 @@ export default function Step_1() {
   // const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  console.log("type step=> ",api_send_data.type)
-
+  // console.log("type step=> ",wizobj)
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   // console.log("wij obj =>",wizobj)
   useEffect(() => {
     setLoading(false);
@@ -48,9 +51,35 @@ export default function Step_1() {
 
   //   }
   // };
+  const handleGoBack = () => {
+    let obj = {
+      material:[],
+      remark:"",
+      payment_type:"",
+      total_amount:0, 
+      photo:[],
+      type :  '',
+      id : '',
+    }
+    let wizobj = {
+      currentStep: 'material',
+      index:0,
+      success:{
+        documents:false,
+        exterior:false,
+        interior:false,
+        engine:false,
+        other:false,
+      },
+      successStep:-1,
+    }
+    dispatch(setSendData(obj));
+    dispatch(setWizardCurrentStep(wizobj));
+    navigation.goBack();
+  };
 
   return (
-    // <ParentContext.Provider value={getData}>
+    <ParentContext.Provider value={handleGoBack}>
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={require('../assets/images/MUMBAI.png')} style={{flex:1}} >
         {loading ? (
@@ -84,11 +113,11 @@ export default function Step_1() {
         )}
         </ImageBackground>
       </SafeAreaView>
-    // </ParentContext.Provider>
+   </ParentContext.Provider>
   );
 }
 
-// export { ParentContext };
+export { ParentContext };
 
 const styles = StyleSheet.create({
   loadingIndicator: {

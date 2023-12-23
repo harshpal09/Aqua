@@ -11,7 +11,8 @@ const HeaderTab = createMaterialTopTabNavigator();
 
 export default function TopNavigation({ navigation }) {
 
-  const badges = useSelector(s => s.global.badges);
+  const amc = useSelector(s => s.global.AMC);
+  const complaint = useSelector(s => s.global.complaint);
 
   // console.log("badges =>",badges)
 
@@ -34,15 +35,14 @@ export default function TopNavigation({ navigation }) {
           tabBarIndicatorContainerStyle: {
 
           },
-          tabBarBadge: route.name === 'Today' ? badges.today : null,
         })}
       >
         <HeaderTab.Screen name="Complaints" component={HomeScreen} options={{
 
-tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.all > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.all.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
+tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={complaint > 9 ? 'numeric-9-plus-circle' : 'numeric-'+complaint.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
 }} />
         <HeaderTab.Screen name="AMC" component={NewInspection} options={{
-          tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={badges.today > 9 ? 'numeric-9-plus-circle' : 'numeric-'+badges.today.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
+          tabBarBadge: () => <View style={{backgroundColor:'white'}}><MaterialCommunityIcons name={amc > 9 ? 'numeric-9-plus-circle' : 'numeric-'+amc.toString()+'-circle'} color={'red'} size={20} style={{fontWeight:'700',position:'absolute',right:10,top:7}} /></View>,
         }} />
         {/* <HeaderTab.Screen name="Completed" component={CompletedInspection}
           options={{

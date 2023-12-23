@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import axios from 'axios'
+
+const BASE_URL = 'https://aqua.kingsmenapparels.com/api/'
 export  const login = async({email,password}) => {
-    console.log("agya")
+    // console.log("agya")
 
     let response ={
         error:'',
@@ -10,7 +12,7 @@ export  const login = async({email,password}) => {
     };
     try{
          response.data = await axios.post(
-            'https://aqua.thebharatech.com/api/login',
+           BASE_URL+'login',
             {
                 mobile:email,
                 password:password,
@@ -28,14 +30,14 @@ export  const login = async({email,password}) => {
 }
 
 export  const allInspection = async({id ,status}) => {
-console.log("agya")
+// console.log("agya")
   let response ={
       error:'',
       data:{},
   };
   try{
        response.data = await axios.post(
-          'https://aqua.thebharatech.com/api/appointment-listing',
+          BASE_URL+'appointment-listing',
           {
               user_id:id,
               status:status,
@@ -59,7 +61,7 @@ export  const getAllotedInventory = async({id}) => {
     };
     try{
          response.data = await axios.post(
-            'https://aqua.thebharatech.com/api/allotedinventory',
+            BASE_URL+'allotedinventory',
             {
                 tech_id:id,
             }
@@ -74,7 +76,7 @@ export  const getAllotedInventory = async({id}) => {
         return response;
     }
   }
-export  const documentsForm = async({leadId}) => {
+export  const getRemarkHistory = async({id,type}) => {
   // console.log("agya")
     let response ={
         error:'',
@@ -82,12 +84,13 @@ export  const documentsForm = async({leadId}) => {
     };
     try{
          response.data = await axios.post(
-            'https://crm.unificars.com/api/cjinspection',
+            BASE_URL+'remarkhistory',
             {
-              lead_id:leadId
+              sr_id:id,
+              type:type
             }
           );
-          console.log("res from api call =>",response.data.data)
+          // console.log("res from api call =>",response.data.data)
         return response;
        
     }
@@ -104,7 +107,7 @@ export  const getAMC = async({id ,status}) => {
   };
   try{
        response.data = await axios.post(
-          'https://aqua.thebharatech.com/api/amc',
+          BASE_URL+'amc',
           {
             user_id:id,
             status:status,
@@ -127,7 +130,7 @@ export  const submitForm = async({data:data}) => {
   };
   try{
        response.data = await axios.post(
-          'https://aqua.thebharatech.com/api/step3',
+          BASE_URL+'step3',
           data
         );
       console.log('get response api  =>',response.data.data)

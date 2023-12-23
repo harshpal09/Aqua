@@ -8,24 +8,24 @@ export default function CustomTextInput({name,fields,onInputChange,isTextArea}) 
     // console.log("dfghjk",text.nativeEvent.text)
     if(text.nativeEvent != undefined){
       setSelectedValue(text.nativeEvent.text);
-      onInputChange(text.nativeEvent.text,fields);
+      onInputChange(text.nativeEvent.text,fields.type);
     }
     else{
       setSelectedValue(text);
-      onInputChange(text,fields);
+      onInputChange(text,fields.type);
     }
   //  console.log("text fields value =>",fields)
   };
 
-console.log("fields =>",fields)
+// console.log("fields =>",fields)
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [selectedvalue])
+  // }, [selectedvalue])
   
   return (
     <View style={[globalStyles.flexBox,{backgroundColor:'transparent',width:'100%',paddingVertical:10}]}>
-      <TextInput onChange={handleInputChange} placeholderTextColor={ selectedvalue == '' ? 'red':LIGHT_BLUE} style={{backgroundColor:'transparent',width:'90%',padding:10,borderRadius:10,borderColor:selectedvalue == '' ? 'red':THEME_COLOR,borderWidth:1,fontWeight:'700',height:isTextArea ? 100:null}} placeholder={"Enter "+fields.placeholder} defaultValue={fields.value} multiline numberOfLines={isTextArea ? 4:0} />
+      <TextInput onChange={handleInputChange} placeholderTextColor={ selectedvalue == '' ? 'red':LIGHT_BLUE} style={{backgroundColor:'transparent',width:'100%',padding:10,borderRadius:10,borderColor:selectedvalue == '' ? 'red':THEME_COLOR,borderWidth:1,fontWeight:'700',height:isTextArea ? 100:null}} placeholder={"Enter "+fields.placeholder} defaultValue={fields.value} multiline numberOfLines={isTextArea ? 4:0} />
     </View>
   )
 }

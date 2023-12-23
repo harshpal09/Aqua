@@ -246,19 +246,7 @@ const useMaterialData = () => {
 
   const data = [
     {
-      description: {
-        icon: 'file',
-        title: 'Description',
-        subfeilds: [
-          {
-            placeholder: 'Please describe the problem',
-            name: 'description',
-            type: 'textarea',
-            elements: [],
-            value: 'gdshdsdksdj',
-          },
-        ],
-      },
+      
       material: {
         icon: 'file',
         title: 'Material',
@@ -272,6 +260,19 @@ const useMaterialData = () => {
           },
         ],
       },
+      description: {
+        icon: 'file',
+        title: 'Description',
+        subfeilds: [
+          {
+            placeholder: 'Please describe the problem',
+            name: 'description',
+            type: 'textarea',
+            elements: [],
+            value: 'gdshdsdksdj',
+          },
+        ],
+      },
       payment: {
         icon: 'file',
         title: 'Payment',
@@ -282,7 +283,22 @@ const useMaterialData = () => {
             type: 'payment',
             elements: [],
             value: '',
+          },   
+          // {
+          //   placeholder: 'Recieved amount',
+          //   name: 'due',
+          //   type: 'text',
+          //   elements: [],
+          //   value: '',
+          // },       
+          {
+            placeholder: 'Please describe the problem',
+            name: 'description',
+            type: 'textarea',
+            elements: [],
+            value: 'gdshdsdksdj',
           },
+          
           {
             placeholder: 'photo with customer',
             name: 'front_main',

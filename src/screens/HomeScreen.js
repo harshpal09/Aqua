@@ -17,7 +17,9 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   isLoggedIn,
+  setAMCBadge,
   setBadges,
+  setComplaintsBadge,
   setProfileDetails,
   setSendData,
 } from '../../redux/features/GlobalSlice';
@@ -36,7 +38,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {allInspection} from '../services/Api';
 import { useNavigation,useFocusEffect } from '@react-navigation/native';
 export default function HomeScreen({navigation}) {
-  const badges = useSelector(s => s.global.badges);
+  const complaint = useSelector(s => s.global.complaint);
+  const amc = useSelector(s => s.global.AMC);
+
   const user_data = useSelector(s => s.global.userDetails);
   const api_send_data = useSelector(state => state.global.send_data);
 
@@ -61,7 +65,7 @@ export default function HomeScreen({navigation}) {
     getData();
   }, []);
 
-  console.log("type => ",api_send_data.type)
+  // console.log("type => ",api_send_data.type)
   const setRedux= () =>{
     let newobj = {...api_send_data};
     newobj.type = 1;
@@ -73,24 +77,24 @@ export default function HomeScreen({navigation}) {
   };
   // console.log("user details ====>",val.id)
   const getData = async () => {
-    console.log('aerrrrr => ', val.id);
+    // console.log('aerrrrr => ', val.id);
     try {
       setLoading(true);
       const response = await allInspection({id: val.id, status: 'total'});
       // console.log('data =>', response.data);
 
       if (response.data.data.code != undefined && response.data.data.code) {
-        let obj = {...badges};
-        obj.all = response.data.data.data.length;
+       
+        
 
-        dispatch(setBadges(obj));
+        dispatch(setComplaintsBadge(response.data.data.data.length));
         setData(response.data.data.data);
       } else {
       }
     } catch (error) {
       console.log('error ', error);
     } finally {
-      console.log('finally...............');
+      // console.log('finally...............');
       setLoading(false);
       setRefreshing(false);
     }
@@ -131,7 +135,7 @@ export default function HomeScreen({navigation}) {
                 renderItem={item => (
                   <ItemContainer
                     onPress={() => {
-                      console.log("type home  =====>",item.item.type)
+                      // console.log("type home  =====>",item.item.type)
                       let obj = {...api_send_data};
                       obj.id = item.item.id
                       obj.type = item.item.type,

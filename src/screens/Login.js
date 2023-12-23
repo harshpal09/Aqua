@@ -125,7 +125,7 @@ const LoginComponent = () => {
         </DarkTextLarge>
         <StyledTextInput
           style={[{borderBottomColor:focusInEmail ? THEME_COLOR : 'grey'}]}
-          placeholder="Email"
+          placeholder="Mobile Number"
           placeholderTextColor={focusInEmail ? THEME_COLOR : 'grey'}
           onFocus={()=>setFocusInEmail(true)}
           onBlur={()=>setFocusInEmail(false)}

@@ -25,7 +25,7 @@ export default function StackNavigation() {
       id : '',
     }
     let wizobj = {
-      currentStep: 'description',
+      currentStep: 'material',
       index:0,
       success:{
         documents:false,
@@ -66,7 +66,7 @@ export default function StackNavigation() {
             tintColor="white"
             style={{paddingHorizontal:10}}
           >
-            <MaterialCommunityIcons name="arrow-left" size={30}  />
+            <MaterialCommunityIcons color="white" name="arrow-left" size={30}  />
           </TouchableOpacity>
         ),
         headerTitle:'Information',headerStyle:{backgroundColor:THEME_COLOR},headerTitleStyle:{color:'white'}}}/>

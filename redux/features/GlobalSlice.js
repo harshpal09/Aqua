@@ -9,6 +9,7 @@ const initialState = {
     {
       material:[],
       remark:"",
+      due:"",
       payment_type:"",
       total_amount:0, 
       photo:[],
@@ -17,7 +18,7 @@ const initialState = {
     }
   ,
   wizardObj: {
-    currentStep: 'description',
+    currentStep: 'material',
     index:0,
     success:{
       documents:false,
@@ -34,12 +35,8 @@ const initialState = {
   userDetails:{
 
   },
-  badges:{
-    today:0,
-    completed:0,
-    all:0, 
-    miss:0,
-  }
+  complaint:0,
+  AMC:0,
 };
 
 export const GlobalSlice = createSlice({
@@ -59,12 +56,11 @@ export const GlobalSlice = createSlice({
     setUserDetails:(state,action)=>{
       state.userDetails = action.payload
     },
-    setBadges:(state,action)=>{
-      state.badges.all = action.payload.all;
-      state.badges.miss = action.payload.miss;
-      state.badges.completed = action.payload.completed;
-      state.badges.today = action.payload.today;
-
+    setComplaintsBadge:(state,action)=>{
+      state.complaint = action.payload;
+    },
+    setAMCBadge:(state,action)=>{
+      state.AMC = action.payload;
     },
     setSendData:(state,action)=>{
       // console.log("redux => ",action.payload)
@@ -76,6 +72,6 @@ export const GlobalSlice = createSlice({
   },
 });
 
-export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setBadges,setSendData,setMaterialType} = GlobalSlice.actions;
+export const { isLoggedIn, setWizardCurrentStep,setProfileDetails ,setUserDetails,setAMCBadge,setComplaintsBadge,setSendData,setMaterialType} = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

@@ -109,7 +109,7 @@ export default function Material({fields,index,onInputChange}) {
     setprice(count*parseInt(fields[index].price))
   }
 
-  console.log("price =>",price)
+  // console.log("price =>",price)
   return (
     <View style={{backgroundColor: 'transparent', width: '100%'}}>
       {}

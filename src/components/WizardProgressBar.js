@@ -16,10 +16,6 @@ const WizardProgressBar = ({route}) => {
   const [ind, setIndex] = useState(0);
   const [item, setItem] = useState([
     {
-      name: 'Description',
-      icon: 'file',
-    },
-    {
       name: 'Material',
       icon: 'car-lifted-pickup',
     },
@@ -58,7 +54,7 @@ const WizardProgressBar = ({route}) => {
   );
     
   function renderSteps() {
-    const steps = 3; // Number of steps
+    const steps = 2; // Number of steps
 
     return item.map((val, index) => {
       const isCurrent = index <= currentStep;
@@ -77,7 +73,7 @@ const WizardProgressBar = ({route}) => {
           <FadeTextSmall style={{ width: 60, position: 'absolute', bottom: -20, left: -12, textAlign: 'center', color: index <= wizobj.index ? wizobj.success[wizobj.currentStep] ? "#22b527" : THEME_COLOR : 'grey' }}>
             {val.name}
           </FadeTextSmall>
-          {index !== steps - 1 ? <View style={[styles.line, { width: (width-20)/3, backgroundColor: index <= wizobj.index - 1 ? wizobj.success[wizobj.currentStep] ? "#22b527" : THEME_COLOR : LIGHT_BLUE_BACKGROUND }]} /> : <></>}
+          {index !== steps - 1 ? <View style={[styles.line, { width: (width-20)/1.5, backgroundColor: index <= wizobj.index - 1 ? wizobj.success[wizobj.currentStep] ? "#22b527" : THEME_COLOR : LIGHT_BLUE_BACKGROUND }]} /> : <></>}
         </View>
       );
     });
