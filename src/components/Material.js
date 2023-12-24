@@ -122,23 +122,23 @@ export default function Material({fields,index,onInputChange}) {
         }}
       />
       <View style={[globalStyles.rowContainer, {backgroundColor: 'transparent',justifyContent:'space-around'}]}>
-        <View style={{backgroundColor:'transparent',left:30}}>
-          <DarkTextLarge>Quantity</DarkTextLarge>
-          <View style={globalStyles.cartIncDecContainer}>
-            <TouchableOpacity
+        <View style={[{backgroundColor:'transparent',left:30,paddingVertical:10},globalStyles.rowContainer]}>
+          <DarkTextLarge>Quantity : </DarkTextLarge>
+          {/* <View style={globalStyles.cartIncDecContainer}> */}
+            {/* <TouchableOpacity
               style={globalStyles.decBtn}
               onPress={() => {setCount(prev => (prev > 2 ? prev - 1 : 1)),setError("");}}>
               <Text style={globalStyles.decButton}>-</Text>
-            </TouchableOpacity>
-            <Text style={globalStyles.incDecField}>{count}</Text>
-            <TouchableOpacity
+            </TouchableOpacity> */}
+            <DarkTextLarge >{count}</DarkTextLarge>
+            {/* <TouchableOpacity
               style={globalStyles.incBtn}
               onPress={handlePlus}>
               <Text style={globalStyles.incButton}>+</Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+          {/* </View> */}
         </View>
-        <View style={[{width:'50%',height:70},globalStyles.flexBox,globalStyles.rowContainer]}>
+        <View style={[{width:'50%'},globalStyles.flexBox,globalStyles.rowContainer]}>
         <DarkTextLarge >Price : </DarkTextLarge>
         <FadeTextMedium style={{fontSize:16,}}>{"₹ "+price}</FadeTextMedium>
       </View>
