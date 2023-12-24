@@ -26,192 +26,8 @@ import {useSelector} from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
  
 export default function InspectionDetails({navigation}) {
-  const [data, setData] = useState([
-    {
-      name: 'Harsh Pal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Harsh Pal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Harsh Pal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Harsh Pal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Harsh Pal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Bhavesh Kapoor',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-    {
-      name: 'Shivam singhal',
-      customer: 'Seller',
-      date: '9 Nov 2013 16:00',
-      car_details: [
-        {
-          key: 'Lead/lot',
-          value: '2344/201',
-        },
-        {
-          key: 'Car',
-          value: 'Toyota Avanza',
-        },
-        {
-          key: 'No. POl',
-          value: 'AX62472',
-        },
-        {
-          key: 'Location',
-          value: 'Delhi',
-        },
-      ],
-    },
-  ]);
-  const [item, setItem] = useState([
-    {
-      name: 'Documents',
-      icon: 'file',
-    },
-    {
-      name: 'Exterior',
-      icon: 'car-lifted-pickup',
-    },
-    {
-      name: 'Interior',
-      icon: 'car-seat-cooler',
-    },
-    {
-      name: 'Cooler',
-      icon: 'engine',
-    },
-    {
-      name: 'Other',
-      icon: 'car-cog',
-    },
-  ]);
-  const [currentStep, setCurrentStep] = useState(0);
+
+  const api_send_data = useSelector(state => state.global.send_data);
 
   const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4']; // Add your steps here
   const profileDetails = useSelector(state => state.global.profileDetails);
@@ -343,7 +159,7 @@ export default function InspectionDetails({navigation}) {
                   </View>
                 </View>
                 
-                
+                {api_send_data.type == 2 ? 
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},
@@ -365,6 +181,7 @@ export default function InspectionDetails({navigation}) {
                     </DarkTextMedium>
                   </View>
                 </View>
+                :<></>}
                 <View
                   style={[
                     {width: '100%', backgroundColor: 'transparent'},

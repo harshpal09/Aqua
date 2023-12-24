@@ -33,6 +33,7 @@ import {
 } from '../components/StyledComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {allInspection, getAllotedInventory} from '../services/Api';
+import { useFocusEffect } from '@react-navigation/native';
 export default function MyInspection({navigation}) {
   const user_data = useSelector(s => s.global.userDetails);
   var val = typeof user_data === 'object' ? user_data : JSON.parse(user_data);
@@ -45,6 +46,12 @@ export default function MyInspection({navigation}) {
   const openPhoneDialer = number => {
     Linking.openURL(`tel:${number}`);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getData();
+    }, [])
+  );
 
   useEffect(() => {
     getData();
@@ -86,7 +93,7 @@ export default function MyInspection({navigation}) {
             }
             ListEmptyComponent={() => (
               <View
-                style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                style={{flex: 1, justifyContent: 'center', alignItems: 'center',width:width,height:height-100}}>
                 <ActivityIndicator size="large" color={THEME_COLOR} />
               </View>
             )}

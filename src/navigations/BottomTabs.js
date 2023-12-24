@@ -55,7 +55,7 @@ export default function BottomTabs() {
       }}
        />
        <Tab.Screen
-       name="AccountSection" 
+       name="Account" 
        component={AccountSection} 
        options={{
         headerShown: true,
