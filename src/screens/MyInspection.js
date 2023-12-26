@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -85,6 +86,7 @@ export default function MyInspection({navigation}) {
       // style={{ flex: 1,padding:10 }}
       >
         <ImageBackground  source={require('../assets/images/MUMBAI.png')} style={{flex:1}}>
+        {data.length > 0 ? (
           <FlatList
             style={{ paddingHorizontal: 10,flexGrow:1}}
             data={data}
@@ -190,6 +192,26 @@ export default function MyInspection({navigation}) {
               </ItemContainer>
             )}
           />
+        ):(
+          <ScrollView
+            style={{
+              backgroundColor: 'transparent',
+              width: width,
+              height: height,
+            }}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getData} />
+            }>
+            <View
+              style={[
+                {flex: 1, backgroundColor: 'transparent', height: height - 200},
+                globalStyles.flexBox,
+              ]}>
+              <DarkTextMedium>No Lead Alloted Inventory Assign yet</DarkTextMedium>
+            </View>
+          </ScrollView>
+        )}
         </ImageBackground> 
       </MainContainer>
     // </SafeAreaView>

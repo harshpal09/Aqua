@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import axios from 'axios'
-
-const BASE_URL = 'https://aqua.kingsmenapparels.com/api/'
+import { BASE_URL } from '../utils/Style'
+// const BASE_URL = 'https://aqua.kingsmenapparels.com/api/'
 export  const login = async({email,password}) => {
     // console.log("agya")
 
