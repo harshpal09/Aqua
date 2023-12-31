@@ -101,7 +101,7 @@ export default function HomeScreen({navigation}) {
   };
 
 
-  // console.log("data =>",data);
+  console.log("data =>",data);
   return (
     <MainContainer
     //  style={{ flex: 1,padding:10 }}
@@ -343,7 +343,7 @@ export default function HomeScreen({navigation}) {
                           globalStyles.flexBox,
                         ]}
                         onPress={() =>
-                          openPhoneDialer(item.item.custmer_mobile)
+                          openPhoneDialer(item.item.registered_phone)
                         }>
                         <MaterialCommunityIcons
                           name={'phone'}
