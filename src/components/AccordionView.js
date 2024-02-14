@@ -195,7 +195,7 @@ const AccordionView = ({
     newobj[key] = event;
     dispatch(setSendData(newobj));
   };
-  // console.log('photo array length =>', api_send_data.photo.length);
+  console.log('photo array length =>', api_send_data);
   const handleClickPhotoChange = photo => {
     let newobj = {...api_send_data};
     let arr = [...newobj.photo];
@@ -387,7 +387,7 @@ const AccordionView = ({
                 </DarkTextLarge>
                 <CustomDropdownAqua
                   fields={{
-                    elements: ['pending', 'online', 'cash'],
+                    elements: ['pending', 'online', 'cash','Free Service'],
                     placeholder: 'Payment Status',
                     value: api_send_data.payment_type,
                   }}
